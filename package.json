@@ -1,0 +1,19 @@
+{
+  "name": "personalwebsite",
+  "version": "1.0.0",
+  "description": "This is just gonna be a repository that will be used to develop my personal website that will be filled with fun and random pages I feel like developing.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PesceJonathan/PersonalWebsite.git"
+  },
+  "author": "Jonathan Pesce",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PesceJonathan/PersonalWebsite/issues"
+  },
+  "homepage": "https://github.com/PesceJonathan/PersonalWebsite#readme"
+}
