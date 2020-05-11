@@ -7,10 +7,10 @@ export class UserInformation extends Component<IProps> {
     }
 
     render() {
-        let {username, elo} = this.props;
+        let {username, rating} = this.props;
         return (
             <Wrapper>
-                {username + " (" + elo + ")"}
+                {username + " (" + rating + ")"}
             </Wrapper>
         );
     }
@@ -23,5 +23,5 @@ const Wrapper = styled.div`
 
 interface IProps {
     username: string,
-    elo: number|string
+    rating: number|string
 }

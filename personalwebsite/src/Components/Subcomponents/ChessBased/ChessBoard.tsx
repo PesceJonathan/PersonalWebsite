@@ -2,21 +2,30 @@ import React, { Component } from "react";
 import Chessground from 'react-chessground';
 import 'react-chessground/dist/assets/chessground.css';
 import 'react-chessground/dist/assets/theme.css'; // Or your own chess theme
-import { Timer } from "./Timer";
 import styled from "styled-components";
 import { PlayerInformation } from "./PlayerInformation";
+import { IGame } from "../../../types/chess-com";
 
-export class ChessBoard extends Component<any, any> {
+export class ChessBoard extends Component<IProps, any> {
     constructor(props: any) {
         super(props);
+
+        let startTime = parseInt(this.props.game.time_control) / 60 + ":00";
+
+        this.state = {
+            whiteTime: startTime,
+            blackTime: startTime,
+            fenPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        }
     }
 
     render() {
+        let {game} = this.props;
         return (
             <Wrapper>
-                <PlayerInformation username={"PesceTheFish"} elo={"1025"} time={"1:00"}/>
-                <div className="merida"><Chessground fen={"r1k4r/p2nb1p1/2b4p/1p1n1p2/2PP4/3Q1NB1/1P3PPP/R5K1 b - c3 0 19"}/></div>
-                <PlayerInformation username={"PesceTheFish"} elo={"1025"} time={"1:00"}/>
+                <PlayerInformation username={game.black.username} rating={game.black.rating} time={this.state.blackTime}/>
+                <div className="merida"><Chessground fen={this.state.fenPosition}/></div>
+                <PlayerInformation username={game.white.username} rating={game.white.rating} time={this.state.whiteTime}/>
             </Wrapper>
         );
     }
@@ -29,6 +38,18 @@ const Wrapper = styled.div`
     flex-direction: column;
     width: fit-content;
 `
+
+//Define props
+interface IProps {
+    game: IGame
+}
+
+interface IState {
+    whiteTime: string,
+    blackTime: string, 
+    fenPosition: string
+}
+
 
 
 
