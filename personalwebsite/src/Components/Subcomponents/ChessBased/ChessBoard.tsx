@@ -15,6 +15,7 @@ const Chess = require('chess.js');
 export class ChessBoard extends Component<IProps, any> {
     private moves: string[];
     private times: string[];
+    private moveIndex: number;
 
     constructor(props: any) {
         super(props);
@@ -24,15 +25,46 @@ export class ChessBoard extends Component<IProps, any> {
         let startTime = parseInt(game.time_control) / 60 + ":00";
         this.moves = this.retrieveMoves(game.pgn);
         this.times = this.retrieveTimes(game.pgn);
-        
+        this.moveIndex = 0;
 
         this.state = {
             whiteTime: startTime,
             blackTime: startTime,
             fenPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         }
+
+        this.nextMove = this.nextMove.bind(this);
     }
 
+    componentDidMount() {
+        setInterval(this.nextMove, 1000);
+    }
+    render() {
+        let {game} = this.props;
+        return (
+            <Wrapper>
+                <PlayerInformation username={game.black.username} rating={game.black.rating} time={this.state.blackTime}/>
+                <div className="merida"><Chessground fen={this.state.fenPosition}/></div>
+                <PlayerInformation username={game.white.username} rating={game.white.rating} time={this.state.whiteTime}/>
+            </Wrapper>
+        );
+    }
+
+    private nextMove() {
+        debugger;
+        let {whiteTime, blackTime, fenPosition} = this.state;
+
+        if (this.moveIndex % 2 == 0) {
+            whiteTime = this.times[this.moveIndex++];
+        } else {
+            blackTime = this.times[this.moveIndex++];
+        }
+
+        fenPosition = this.moves[this.moveIndex];
+
+        this.setState({whiteTime: whiteTime, blackTime: blackTime, fenPosition: fenPosition});
+    }
+    
     private retrieveMoves(pgn: string): string[] {
         let chess: ChessInstance = new Chess();
         chess.load_pgn(pgn);
@@ -53,20 +85,6 @@ export class ChessBoard extends Component<IProps, any> {
         } while (time);
 
         return times;
-    }
-
-    componentDidMount() {
-        setInterval(() => {}, 1000);
-    }
-    render() {
-        let {game} = this.props;
-        return (
-            <Wrapper>
-                <PlayerInformation username={game.black.username} rating={game.black.rating} time={this.state.blackTime}/>
-                <div className="merida"><Chessground fen={this.state.fenPosition}/></div>
-                <PlayerInformation username={game.white.username} rating={game.white.rating} time={this.state.whiteTime}/>
-            </Wrapper>
-        );
     }
 }
 
