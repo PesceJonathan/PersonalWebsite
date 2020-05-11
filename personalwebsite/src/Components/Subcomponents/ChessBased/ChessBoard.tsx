@@ -15,12 +15,14 @@ const Chess = require('chess.js');
 export class ChessBoard extends Component<IProps, any> {
     private moves: string[];
     private times: string[];
+    private chess: ChessInstance;
     private moveIndex: number;
 
     constructor(props: any) {
         super(props);
 
         let {game} = this.props;
+        this.chess = new Chess();
 
         let startTime = parseInt(game.time_control) / 60 + ":00";
         this.moves = this.retrieveMoves(game.pgn);
@@ -55,24 +57,24 @@ export class ChessBoard extends Component<IProps, any> {
         let {whiteTime, blackTime, fenPosition} = this.state;
 
         if (this.moveIndex % 2 == 0) {
-            whiteTime = this.times[this.moveIndex++];
+            whiteTime = this.times[this.moveIndex];
         } else {
-            blackTime = this.times[this.moveIndex++];
+            blackTime = this.times[this.moveIndex];
         }
 
-        fenPosition = this.moves[this.moveIndex];
-
-        this.setState({whiteTime: whiteTime, blackTime: blackTime, fenPosition: fenPosition});
+        this.chess.move(this.moves[this.moveIndex++]);
+        this.setState({whiteTime: whiteTime, blackTime: blackTime, fenPosition: this.chess.fen()});
     }
     
     private retrieveMoves(pgn: string): string[] {
-        let chess: ChessInstance = new Chess();
-        chess.load_pgn(pgn);
-        return chess.history();
+        this.chess.load_pgn(pgn);
+        let moves: string[] = this.chess.history();
+        this.chess.reset();
+        return moves;
     }
 
     private retrieveTimes(pgn: string): string[] {
-        let regex: RegExp = new RegExp("/{\[%clk [0-9]:[0-5][0-9]:[0-5][0-9].[0-9]]}/g");
+        let regex: RegExp = new RegExp("{\[%clk [0-9]:[0-5][0-9]:[0-5][0-9].[0-9]]}");
         let times: string[] = [];
         let time: RegExpExecArray|null;
 
@@ -80,6 +82,7 @@ export class ChessBoard extends Component<IProps, any> {
             time = regex.exec(pgn);
             if (time) {
                 let timeFormatted: string = time[0].split("{[%clk ")[1];
+                console.log(timeFormatted);
                 times.push(timeFormatted.slice(0, -2));
             }
         } while (time);
