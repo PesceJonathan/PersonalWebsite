@@ -5,12 +5,26 @@ import 'react-chessground/dist/assets/theme.css'; // Or your own chess theme
 import styled from "styled-components";
 import { PlayerInformation } from "./PlayerInformation";
 import { IGame } from "../../../types/chess-com";
+import { ChessInstance } from "chess.js";
+
+
+//Issue with typescript for now: https://github.com/jhlywa/chess.js/issues/208
+//May be able to fix in the future
+const Chess = require('chess.js');
 
 export class ChessBoard extends Component<IProps, any> {
+    private moves: string[];
+    private times: string[];
+
     constructor(props: any) {
         super(props);
 
-        let startTime = parseInt(this.props.game.time_control) / 60 + ":00";
+        let {game} = this.props;
+
+        let startTime = parseInt(game.time_control) / 60 + ":00";
+        this.moves = this.retrieveMoves(game.pgn);
+        this.times = this.retrieveTimes(game.pgn);
+        
 
         this.state = {
             whiteTime: startTime,
@@ -19,6 +33,31 @@ export class ChessBoard extends Component<IProps, any> {
         }
     }
 
+    private retrieveMoves(pgn: string): string[] {
+        let chess: ChessInstance = new Chess();
+        chess.load_pgn(pgn);
+        return chess.history();
+    }
+
+    private retrieveTimes(pgn: string): string[] {
+        let regex: RegExp = new RegExp("/{\[%clk [0-9]:[0-5][0-9]:[0-5][0-9].[0-9]]}/g");
+        let times: string[] = [];
+        let time: RegExpExecArray|null;
+
+        do {
+            time = regex.exec(pgn);
+            if (time) {
+                let timeFormatted: string = time[0].split("{[%clk ")[1];
+                times.push(timeFormatted.slice(0, -2));
+            }
+        } while (time);
+
+        return times;
+    }
+
+    componentDidMount() {
+        setInterval(() => {}, 1000);
+    }
     render() {
         let {game} = this.props;
         return (
