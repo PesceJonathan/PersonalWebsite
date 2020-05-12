@@ -1,9 +1,16 @@
 import React from 'react';
 import { ChessBoard } from './Components/Subcomponents/ChessBased/ChessBoard';
 import { IGame } from './types/chess-com';
+import { DonutGraphComponent } from './Components/Subcomponents/DonutGraphComponent';
 
 function App() {
-  return <ChessBoard game={tempData}></ChessBoard>;
+
+  return (
+    <>
+      <ChessBoard game={tempData}/>
+      <DonutGraphComponent/>
+    </>
+    );
 }
 
 //Temp data for now
