@@ -12,35 +12,56 @@ import { ChessInstance } from "chess.js";
 //May be able to fix in the future
 const Chess = require('chess.js');
 
-export class ChessBoard extends Component<IProps, any> {
+/**
+ * TODO for the component
+ * 
+ * 1. Style the component, ideally with wooden 3D pieces
+ * 2. Fix time format
+ * 3. Fix timer location
+ * 4. Handle end of game
+ */
+
+/**
+ * React component that is used to display a chessboard at a starting position, then
+ * to show a move a second for a given game. The component takes in simply a game object
+ * which is just the game description returned by the Chess.com API. 
+ * 
+ * @author Jonathan Pesce
+ */
+export class ChessBoard extends Component<IProps, IState> {
     private moves: string[];
     private times: string[];
     private chess: ChessInstance;
     private moveIndex: number;
 
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         let {game} = this.props;
-        this.chess = new Chess();
-
         let startTime = parseInt(game.time_control) / 60 + ":00";
+
+        this.chess = new Chess();
+        this.moveIndex = 0;
+
         this.moves = this.retrieveMoves(game.pgn);
         this.times = this.retrieveTimes(game.pgn);
-        this.moveIndex = 0;
 
         this.state = {
             whiteTime: startTime,
             blackTime: startTime,
-            fenPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+            fenPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" //Starting position for FEN
         }
 
         this.nextMove = this.nextMove.bind(this);
     }
 
+    /**
+     * Everytime the component is redrawn, wait a second to play the next move
+     */
     componentDidMount() {
-        setInterval(this.nextMove, 1000);
+        setInterval(this.nextMove, 1000); 
     }
+
     render() {
         let {game} = this.props;
         return (
@@ -52,8 +73,11 @@ export class ChessBoard extends Component<IProps, any> {
         );
     }
 
+    /**
+     * Helper function that is used to update the board for the next move as well
+     * as the timers for the player who played.
+     */
     private nextMove() {
-        debugger;
         let {whiteTime, blackTime, fenPosition} = this.state;
 
         if (this.moveIndex % 2 == 0) {
@@ -66,6 +90,12 @@ export class ChessBoard extends Component<IProps, any> {
         this.setState({whiteTime: whiteTime, blackTime: blackTime, fenPosition: this.chess.fen()});
     }
     
+    /**
+     * Using chess API retrieve all the different moves played in the game and 
+     * return it as an array.
+     * 
+     * @param pgn PGN describing the game
+     */
     private retrieveMoves(pgn: string): string[] {
         this.chess.load_pgn(pgn);
         let moves: string[] = this.chess.history();
@@ -73,10 +103,16 @@ export class ChessBoard extends Component<IProps, any> {
         return moves;
     }
 
+    /**
+     * Using regex, grab all of the different clock times for each move
+     * and return it as an array.
+     * 
+     * @param pgn PGN describing the game
+     */
     private retrieveTimes(pgn: string): string[] {
-        let regex: RegExp = new RegExp("{\[%clk [0-9]:[0-5][0-9]:[0-5][0-9].[0-9]]}");
+        let regex: RegExp = /{\[%clk [0-9]:[0-5][0-9]:[0-5][0-9]\.?[0-9]?]}/g;
         let times: string[] = [];
-        let time: RegExpExecArray|null;
+        let time: RegExpExecArray|null; 
 
         do {
             time = regex.exec(pgn);
@@ -109,7 +145,3 @@ interface IState {
     blackTime: string, 
     fenPosition: string
 }
-
-
-
-
