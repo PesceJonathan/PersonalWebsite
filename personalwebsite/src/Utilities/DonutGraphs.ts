@@ -5,15 +5,21 @@ export class DonutGraph {
     private data: DonutGraphData[];
     private id: string;
     private svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
+    private hoverRadius: number;
     private outerRadius: number;
     private innerRadius: number;
     private totalGames: number;
+    private hoverOpacity: number;
+    private expandedHoverArc: any;
+    private hiddenHoverArc: any;
 
     public constructor(data: DonutGraphData[], id: string) {
         this.data = data;
         this.id = id;
+        this.hoverRadius = 0.9;
         this.outerRadius = 0.8;
         this.innerRadius = 0.5;
+        this.hoverOpacity = 0.25;
         this.totalGames = 0;
         this.data.forEach((elem: DonutGraphData) => this.totalGames += elem.result);
 
@@ -36,6 +42,10 @@ export class DonutGraph {
             radius = Math.min(width, height) / 2;
         }
 
+        //Set once the expanded and hidden hover arc
+        this.expandedHoverArc = d3.arc().innerRadius(radius * this.outerRadius).outerRadius(radius * this.hoverRadius) as any;
+        this.hiddenHoverArc = d3.arc().innerRadius(radius * this.outerRadius).outerRadius(radius * this.outerRadius) as any;
+
         //Set the height and width of the svg and then append a g container to draw the graph
         let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
         svg = this.svg.attr("height", height)
@@ -44,7 +54,8 @@ export class DonutGraph {
                     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
         //Draw the graph and the text with the calculated values
-        this.drawDonutChart(svg, radius, stroke);
+        this.drawDonutChart(svg, radius, stroke, this.innerRadius, this.outerRadius, 1, false);
+        this.drawDonutChart(svg, radius, stroke, this.outerRadius, this.outerRadius, this.hoverOpacity, true);
         this.drawCenterText(svg, radius);
     }
 
@@ -124,9 +135,13 @@ export class DonutGraph {
     }
 
     /**
-     * Draws the donut chart itself onto the screen
+     * Draws a donut graph based on the given data
+     * 
+     * @param svg 
+     * @param radius 
+     * @param stroke 
      */
-    private drawDonutChart(svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>, radius: number, stroke: string) {
+    private drawDonutChart(svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>, radius: number, stroke: string, innerRadius:number, outerRadius: number, opacity: number, hover: boolean) {
         let pie = d3.pie<DonutGraphData>()
         .sort(null)
         .value((d: DonutGraphData) => d.result);
@@ -134,18 +149,21 @@ export class DonutGraph {
         let pieData = pie(this.data);
 
         //Arc generator
-        let arc = d3.arc().innerRadius(radius * this.innerRadius).outerRadius(radius * this.outerRadius);
+        let arc = d3.arc().innerRadius(radius * innerRadius).outerRadius(radius * outerRadius);
 
         //Using the data build the chart
         svg.selectAll("slices")
             .data(pieData)
             .enter()
             .append("path")
+            .attr("id", (d: PieArcDatum<DonutGraphData>) => hover ? this.id + d.data.title + "hover" : this.id + d.data.title)
             .attr("d", arc as any)
             .attr("fill", (d: PieArcDatum<DonutGraphData>) => d.data.colour)
             .attr("stroke", stroke)
+            .on("mouseenter", hover ? () => {} : (d: PieArcDatum<DonutGraphData>) => {d3.select("#" + this.id + d.data.title + "hover").attr("d", this.expandedHoverArc); console.log("Enter")})
+            .on("mouseout", hover ? () => {} : (d: PieArcDatum<DonutGraphData>) => {d3.select("#" + this.id + d.data.title + "hover").attr("d", this.hiddenHoverArc); console.log("Exit");})
             .style("stroke-width", "1px")
-            .style("opacity", 1);
+            .style("opacity", opacity);
     }
 }
 
