@@ -10,25 +10,25 @@ export class DonutGraphComponent extends Component {
     }
 
     render() {
-        return <div style={{height: "500px"}} id="donutGraph"></div>
+        return <div style={{height: "300px"}} id="donutGraph"></div>
     }
 }
 
 
 let data: DonutGraphData[] = [
-    {
-        title: "wins",
-        result: 30,
-        colour: "#769656",
-    }, 
-    {
+        {
         title: "loss",
-        result: 70,
+        result: 714,
         colour: "#b33430",
     },
     {
         title: "draws",
-        result: 12,
+        result: 56,
         colour: "#a7a6a2",
-    }
+    },
+    {
+        title: "wins",
+        result: 734,
+        colour: "#769656",
+    }, 
 ]
