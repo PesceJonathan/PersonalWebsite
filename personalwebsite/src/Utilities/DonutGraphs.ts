@@ -2,26 +2,49 @@ import * as d3 from 'd3';
 import { PieArcDatum } from 'd3';
 
 export class DonutGraph {
-    private data: DonutGraphData[];
+    private data: DataWithPercentage[];
     private id: string;
     private svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
     private hoverRadius: number;
     private outerRadius: number;
     private innerRadius: number;
-    private totalGames: number;
     private hoverOpacity: number;
     private expandedHoverArc: any;
     private hiddenHoverArc: any;
+    private Tooltip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+    private width: number;
+    private height: number;
 
     public constructor(data: DonutGraphData[], id: string) {
-        this.data = data;
+        //Set the constants
         this.id = id;
         this.hoverRadius = 0.9;
         this.outerRadius = 0.8;
         this.innerRadius = 0.5;
         this.hoverOpacity = 0.25;
-        this.totalGames = 0;
-        this.data.forEach((elem: DonutGraphData) => this.totalGames += elem.result);
+        this.width = 0;
+        this.height = 0;
+
+        //Calculate the percentage for each element of data
+        let totalGames = 0;
+        data.forEach((elem: DonutGraphData) => totalGames += elem.result);
+
+        this.data = [];
+        data.forEach((d: DonutGraphData) => this.data.push({...d, percentage: ((d.result / totalGames) * 100).toFixed(1)}))
+
+        this.Tooltip = d3.select("#" + this.id)
+                         .append("div")
+                         .style("width", "fit-content")
+                         .style("opacity", 0)
+                         .style("background-color", "rgba(247,247,247,0.85)")
+                         .style("border", "solid")
+                         .style("border-color", "blue")
+                         .style("border-width", "1px")
+                         .style("border-radius", "3px")
+                         .style("font-family", "Lucida Grande")
+                         .style("padding", "5px")
+                         .style("position", "absolute");
+            
 
         //Append an svg to the div that will be used to draw our graph on
         this.svg = d3.select("#" + this.id)
@@ -29,17 +52,15 @@ export class DonutGraph {
     }
 
     public render() {
-        let height: number = 0;
-        let width: number = 0;
         let radius: number = 0;
         let stroke: string = "white";
         
         //Grab the div that is holding the graph to get it's height and width and use it to define the radius
         let containerDiv: HTMLElement|null = document.getElementById(this.id);
         if (containerDiv) {
-            height = containerDiv.clientHeight;
-            width = containerDiv.clientWidth;
-            radius = Math.min(width, height) / 2;
+            this.height = containerDiv.clientHeight;
+            this.width = containerDiv.clientWidth;
+            radius = Math.min(this.width, this.height) / 2;
         }
 
         //Set once the expanded and hidden hover arc
@@ -48,10 +69,10 @@ export class DonutGraph {
 
         //Set the height and width of the svg and then append a g container to draw the graph
         let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
-        svg = this.svg.attr("height", height)
-                    .attr("width", width)
+        svg = this.svg.attr("height", this.height)
+                    .attr("width", this.width)
                     .append("g")
-                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+                    .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")");
 
         //Draw the graph and the text with the calculated values
         this.drawDonutChart(svg, radius, stroke, this.innerRadius, this.outerRadius, 1, false);
@@ -67,7 +88,7 @@ export class DonutGraph {
      * @param radius Radius of the main large circle
      */
     private drawCenterText(svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>, radius: number) { 
-        let length: number = this.data.reduce((a: DonutGraphData, b: DonutGraphData) => a.result > b.result ? a : b).result.toString().length;
+        let length: number = this.data.reduce((a: DataWithPercentage, b: DataWithPercentage) => a.result > b.result ? a : b).result.toString().length;
         let fontSize: number = radius / 6 - (1 * (length - 3));
         let count: number = -1;
         let offset: number = radius / 50;
@@ -77,6 +98,8 @@ export class DonutGraph {
         let y = fontSize / 2 + offset;
         this.drawLine(svg, x, y);
         this.drawLine(svg, x, -y);
+
+        this.Tooltip.style("font-size", fontSize / 2 + "px");
 
         //Increase the offset to add space between the lines and text (done in specific order to replicate chess.com)
         offset *= 1.9;
@@ -111,8 +134,8 @@ export class DonutGraph {
      * @param offset offset to be added to the position of the text
      * @param count the count of the element being displayed
      */
-    private drawTextForElement(svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>, element: DonutGraphData, fontSize: number, offset: number, count: number) {
-        let percentage = ((element.result / this.totalGames) * 100).toFixed(1) + "%";
+    private drawTextForElement(svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>, element: DataWithPercentage, fontSize: number, offset: number, count: number) {
+        let percentage = element.percentage + "%";
 
         let text = svg.append("text")
             .attr("text-anchor", "middle")
@@ -142,9 +165,9 @@ export class DonutGraph {
      * @param stroke 
      */
     private drawDonutChart(svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>, radius: number, stroke: string, innerRadius:number, outerRadius: number, opacity: number, hover: boolean) {
-        let pie = d3.pie<DonutGraphData>()
+        let pie = d3.pie<DataWithPercentage>()
         .sort(null)
-        .value((d: DonutGraphData) => d.result);
+        .value((d: DataWithPercentage) => d.result);
 
         let pieData = pie(this.data);
 
@@ -156,19 +179,54 @@ export class DonutGraph {
             .data(pieData)
             .enter()
             .append("path")
-            .attr("id", (d: PieArcDatum<DonutGraphData>) => hover ? this.id + d.data.title + "hover" : this.id + d.data.title)
+            .attr("id", (d: PieArcDatum<DataWithPercentage>) => hover ? this.id + d.data.title + "hover" : this.id + d.data.title)
             .attr("d", arc as any)
-            .attr("fill", (d: PieArcDatum<DonutGraphData>) => d.data.colour)
+            .attr("fill", (d: PieArcDatum<DataWithPercentage>) => d.data.colour)
             .attr("stroke", stroke)
-            .on("mouseenter", hover ? () => {} : (d: PieArcDatum<DonutGraphData>) => d3.select("#" + this.id + d.data.title + "hover").interrupt().attr("d", this.expandedHoverArc))
-            .on("mouseout", hover ? () => {} : (d: PieArcDatum<DonutGraphData>) => d3.select("#" + this.id + d.data.title + "hover").transition().duration(500).attr("d", this.hiddenHoverArc))
             .style("stroke-width", "1px")
-            .style("opacity", opacity);
+            .style("opacity", opacity)
+            .on("mouseenter", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => d3.select("#" + this.id + d.data.title + "hover").interrupt().attr("d", this.expandedHoverArc))
+            .on("mouseout", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => d3.select("#" + this.id + d.data.title + "hover").transition().duration(500).attr("d", this.hiddenHoverArc))
+            .on("mouseover", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => this.Tooltip.style("opacity", 1))
+            .on("mousemove", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>, i, n) => {
+
+                let tooltipWidth: number = this.Tooltip.node()?.offsetWidth ?? 0;
+                let tooltipHeight: number = this.Tooltip.node()?.offsetHeight ?? 0;
+
+                let positionLeft: number = (d3.mouse(n[i])[0]) + (this.width/2) - tooltipWidth / 2;
+                let positionRight: number = (d3.mouse(n[i])[1]) + (this.height/2) - tooltipHeight - 5;
+            
+
+                this.Tooltip.html(this.generateTooltipText(d))
+                            .style("border-color", d.data.colour)
+                            .style("left", positionLeft + "px")
+                            .style("top", positionRight + "px");
+            })
+            .on("mouseleave", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => this.Tooltip.style("opacity", 0));
+    }
+
+    private mouseMoveEventHandler() {
+        
+    }
+
+    private generateTooltipText(d: PieArcDatum<DataWithPercentage>) {
+        return "<b>" + this.capitalize(d.data.title) + ":</b> " + d.data.result + " (" + d.data.percentage + "%)";
+    }
+
+    private capitalize(word: string): string {
+        return word.charAt(0).toUpperCase() + word.slice(1);
     }
 }
 
 export interface DonutGraphData {
     title: string,
     result: number,
-    colour: string
+    colour: string,
+}
+
+interface DataWithPercentage {
+    title: string,
+    result: number,
+    colour: string,
+    percentage: string
 }

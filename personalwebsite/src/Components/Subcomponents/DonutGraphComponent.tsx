@@ -10,7 +10,7 @@ export class DonutGraphComponent extends Component {
     }
 
     render() {
-        return <div style={{height: "300px"}} id="donutGraph"></div>
+        return <div style={{height: "300px", position:"relative"}} id="donutGraph"></div>
     }
 }
 

@@ -78,9 +78,9 @@ export class ChessBoard extends Component<IProps, IState> {
      * as the timers for the player who played.
      */
     private nextMove() {
-        let {whiteTime, blackTime, fenPosition} = this.state;
+        let {whiteTime, blackTime} = this.state;
 
-        if (this.moveIndex % 2 == 0) {
+        if (this.moveIndex % 2 === 0) {
             whiteTime = this.times[this.moveIndex];
         } else {
             blackTime = this.times[this.moveIndex];
@@ -135,7 +135,7 @@ const Wrapper = styled.div`
     width: fit-content;
 `
 
-//Define props
+//Define props and state
 interface IProps {
     game: IGame
 }
