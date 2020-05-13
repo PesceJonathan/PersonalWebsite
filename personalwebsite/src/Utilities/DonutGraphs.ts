@@ -43,8 +43,8 @@ export class DonutGraph {
         }
 
         //Set once the expanded and hidden hover arc
-        this.expandedHoverArc = d3.arc().innerRadius(radius * this.outerRadius).outerRadius(radius * this.hoverRadius) as any;
-        this.hiddenHoverArc = d3.arc().innerRadius(radius * this.outerRadius).outerRadius(radius * this.outerRadius) as any;
+        this.expandedHoverArc = d3.arc().innerRadius(radius * this.outerRadius - 0.1).outerRadius(radius * this.hoverRadius) as any;
+        this.hiddenHoverArc = d3.arc().innerRadius(radius * this.outerRadius - 0.1).outerRadius(radius * this.outerRadius) as any;
 
         //Set the height and width of the svg and then append a g container to draw the graph
         let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
@@ -160,8 +160,8 @@ export class DonutGraph {
             .attr("d", arc as any)
             .attr("fill", (d: PieArcDatum<DonutGraphData>) => d.data.colour)
             .attr("stroke", stroke)
-            .on("mouseenter", hover ? () => {} : (d: PieArcDatum<DonutGraphData>) => {d3.select("#" + this.id + d.data.title + "hover").attr("d", this.expandedHoverArc); console.log("Enter")})
-            .on("mouseout", hover ? () => {} : (d: PieArcDatum<DonutGraphData>) => {d3.select("#" + this.id + d.data.title + "hover").attr("d", this.hiddenHoverArc); console.log("Exit");})
+            .on("mouseenter", hover ? () => {} : (d: PieArcDatum<DonutGraphData>) => d3.select("#" + this.id + d.data.title + "hover").interrupt().attr("d", this.expandedHoverArc))
+            .on("mouseout", hover ? () => {} : (d: PieArcDatum<DonutGraphData>) => d3.select("#" + this.id + d.data.title + "hover").transition().duration(500).attr("d", this.hiddenHoverArc))
             .style("stroke-width", "1px")
             .style("opacity", opacity);
     }
