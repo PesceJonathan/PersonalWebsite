@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { PieArcDatum } from 'd3';
+import { PieArcDatum, arc, axisRight } from 'd3';
 
 export class DonutGraph {
     private data: DataWithPercentage[];
@@ -14,6 +14,7 @@ export class DonutGraph {
     private Tooltip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
     private width: number;
     private height: number;
+    private loadAnimation: number;
 
     public constructor(data: DonutGraphData[], id: string) {
         //Set the constants
@@ -24,6 +25,7 @@ export class DonutGraph {
         this.hoverOpacity = 0.25;
         this.width = 0;
         this.height = 0;
+        this.loadAnimation = 1000;
 
         //Calculate the percentage for each element of data
         let totalGames = 0;
@@ -158,33 +160,34 @@ export class DonutGraph {
     }
 
     /**
-     * Draws a donut graph based on the given data
+     * Draws a donut graph based on the given data and adds the drawing animations
      * 
-     * @param svg 
-     * @param radius 
-     * @param stroke 
+     * @param svg SVG to append the graph too
+     * @param radius Radius of the graph
+     * @param stroke Stroke size of the divsors of sections
      */
     private drawDonutChart(svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>, radius: number, stroke: string, innerRadius:number, outerRadius: number, opacity: number, hover: boolean) {
-        let pie = d3.pie<DataWithPercentage>()
-        .sort(null)
-        .value((d: DataWithPercentage) => d.result);
+        let pie: d3.Pie<any, DataWithPercentage> = d3.pie<DataWithPercentage>()
+                                                    .sort(null)
+                                                    .value((d: DataWithPercentage) => d.result);
 
-        let pieData = pie(this.data);
+        //Format the data properly for the pie chart                                              
+        let pieData: d3.PieArcDatum<DataWithPercentage>[] = pie(this.data);
 
         //Arc generator
-        let arc = d3.arc().innerRadius(radius * innerRadius).outerRadius(radius * outerRadius);
+        let arc = d3.arc<PieArcDatum<DataWithPercentage>>().innerRadius(radius * innerRadius).outerRadius(radius * outerRadius);
 
         //Using the data build the chart
-        svg.selectAll("slices")
+        let arcs = svg.selectAll("slices")
             .data(pieData)
             .enter()
             .append("path")
             .attr("id", (d: PieArcDatum<DataWithPercentage>) => hover ? this.id + d.data.title + "hover" : this.id + d.data.title)
-            .attr("d", arc as any)
             .attr("fill", (d: PieArcDatum<DataWithPercentage>) => d.data.colour)
             .attr("stroke", stroke)
             .style("stroke-width", "1px")
             .style("opacity", opacity)
+            //Add events for dealing with the different hover events
             .on("mouseenter", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => d3.select("#" + this.id + d.data.title + "hover").interrupt().attr("d", this.expandedHoverArc))
             .on("mouseout", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => d3.select("#" + this.id + d.data.title + "hover").transition().duration(500).attr("d", this.hiddenHoverArc))
             .on("mouseover", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => this.Tooltip.style("opacity", 1))
@@ -203,10 +206,47 @@ export class DonutGraph {
                             .style("top", positionRight + "px");
             })
             .on("mouseleave", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => this.Tooltip.style("opacity", 0));
+
+        //Add the animations to the pie chart
+        if (!hover)
+            this.addStartAnimations(pie, arc, arcs);
     }
 
-    private mouseMoveEventHandler() {
-        
+    /**
+     * 
+     * @param pie 
+     * @param arc 
+     * @param arcsObject 
+     */
+    private addStartAnimations(pie: d3.Pie<any, DataWithPercentage>, arc: d3.Arc<any, d3.PieArcDatum<DataWithPercentage>>, arcsObject:  d3.Selection<SVGPathElement, d3.PieArcDatum<DataWithPercentage>, SVGGElement, unknown>) {
+        //Adding the load animations
+        let angleInterpolation = d3.interpolate(pie.startAngle()(this.data), pie.endAngle()(this.data));
+        let outerRadiusInterpolation = d3.interpolate(0, this.outerRadius);
+        let innerRadiusInterpolation = d3.interpolate(0, this.innerRadius);
+
+        arcsObject.transition()
+            .duration(this.loadAnimation)
+            //@ts-ignore Type issue not sure how to resolve but works
+            .attrTween("d", (d: d3.PieArcDatum<DataWithPercentage>) => {
+                let end = d.endAngle;
+                return (t: number) => {
+                    let currentAngle: number = angleInterpolation(t);
+                    if (currentAngle < d.startAngle)
+                        return "";
+
+                    d.endAngle = Math.min(currentAngle, end);
+                    return arc(d);
+                }
+            });
+
+        d3.selectAll("slices")
+            .transition()
+            .duration(this.loadAnimation)
+            .tween("arcRadii", () => {
+                return (t: number) => 
+                    arc.innerRadius(innerRadiusInterpolation(t))
+                    .outerRadius(outerRadiusInterpolation(t));
+            });
     }
 
     private generateTooltipText(d: PieArcDatum<DataWithPercentage>) {
