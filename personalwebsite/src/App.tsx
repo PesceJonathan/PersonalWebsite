@@ -2,6 +2,7 @@ import React from 'react';
 import { ChessBoard } from './Components/Subcomponents/ChessBased/ChessBoard';
 import { IGame } from './types/chess-com';
 import { DonutGraphComponent } from './Components/Subcomponents/DonutGraphComponent';
+import { BarChartComponent } from './Components/Subcomponents/BarChartComponent';
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
     <>
       <ChessBoard game={tempData}/>
       <DonutGraphComponent/>
+      <BarChartComponent/>
     </>
     );
 }

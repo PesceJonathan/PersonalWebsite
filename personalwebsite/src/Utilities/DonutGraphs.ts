@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { PieArcDatum, arc, axisRight } from 'd3';
+import { PieArcDatum } from 'd3';
 
 export class DonutGraph {
     private data: DataWithPercentage[];

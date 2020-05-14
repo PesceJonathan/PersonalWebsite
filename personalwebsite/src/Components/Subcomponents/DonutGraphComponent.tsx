@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component } from "react";
 import { DonutGraph, DonutGraphData } from '../../Utilities/DonutGraphs';
+import styled from 'styled-components';
 
 export class DonutGraphComponent extends Component {
     private static graphNumber: number = 0;
@@ -19,7 +20,7 @@ export class DonutGraphComponent extends Component {
     }
 
     render() {
-        return <div style={{height: "300px", position:"relative"}} id={this.id}></div>
+        return <DonutDiv style={{height: "300px"}} id={this.id}></DonutDiv>
     }
 }
 
@@ -27,6 +28,11 @@ export class DonutGraphComponent extends Component {
 interface IState {
     id: string
 }
+
+//Styled Components
+let DonutDiv = styled.div`
+    position: relative;
+`
 
 let data: DonutGraphData[] = [
         {
