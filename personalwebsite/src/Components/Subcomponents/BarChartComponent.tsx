@@ -3,19 +3,34 @@ import { Component } from "react";
 import { BarChart } from '../../Utilities/BarChart';
 import styled from 'styled-components';
 
-export class BarChartComponent extends Component {
-    
+export class BarChartComponent extends Component<IProps> {
+    private static number: number = 0;
+    private id: string;
+
+    constructor(props: IProps) {
+        super(props);
+
+        this.id = "barGraph" + BarChartComponent.number++;
+    }
+
     componentDidMount() {
-        let chart = new BarChart();
+        let {data} = this.props;
+
+        let chart = new BarChart(data, this.id);
         chart.render();
     }
 
     render() {
-        return <BarChartDiv id="barGraph"></BarChartDiv>
+        return <BarChartDiv id={this.id}></BarChartDiv>
     }
 }
 
+interface IProps {
+    data: BarGraphData[]
+}
+
 const BarChartDiv = styled.div`
-    height: 300px;
-    width: 200px;
+    height: 50%;
+    width: 100%;
+    position: relative;
 `

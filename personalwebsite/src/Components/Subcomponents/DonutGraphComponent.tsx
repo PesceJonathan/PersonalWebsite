@@ -1,9 +1,9 @@
 import React from 'react';
 import { Component } from "react";
-import { DonutGraph, DonutGraphData } from '../../Utilities/DonutGraphs';
+import { DonutGraph } from '../../Utilities/DonutGraphs';
 import styled from 'styled-components';
 
-export class DonutGraphComponent extends Component {
+export class DonutGraphComponent extends Component<IProps> {
     private static graphNumber: number = 0;
     private static baseID: string = "donutGraph";
     private id: string;
@@ -11,43 +11,30 @@ export class DonutGraphComponent extends Component {
     constructor(props: any) {
         super(props);
 
-        this.id = DonutGraphComponent.baseID + DonutGraphComponent.graphNumber;
+        this.id = DonutGraphComponent.baseID + DonutGraphComponent.graphNumber++;
     }
 
     componentDidMount() {
+        let {data} = this.props;
         let graph: DonutGraph = new DonutGraph(data, this.id);
         graph.render();
     }
 
     render() {
-        return <DonutDiv style={{height: "300px"}} id={this.id}></DonutDiv>
+        return <DonutDiv id={this.id}></DonutDiv>
     }
 }
 
-//Define state
-interface IState {
-    id: string
+
+
+//Define props
+interface IProps {
+    data: DonutGraphData[]
 }
 
 //Styled Components
 let DonutDiv = styled.div`
     position: relative;
+    width: 100%;
+    height: 50%;
 `
-
-let data: DonutGraphData[] = [
-        {
-        title: "loss",
-        result: 714,
-        colour: "#b33430",
-    },
-    {
-        title: "draws",
-        result: 56,
-        colour: "#a7a6a2",
-    },
-    {
-        title: "wins",
-        result: 734,
-        colour: "#769656",
-    }, 
-]

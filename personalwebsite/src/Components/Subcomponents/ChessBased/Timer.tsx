@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 export class Timer extends Component<IProps> {
-    constructor(props: IProps) {
-        super(props);
-    }
-
     render() {
         return <TimerDiv>{this.props.time}</TimerDiv>  
     }

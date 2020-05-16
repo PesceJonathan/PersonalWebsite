@@ -23,6 +23,7 @@
     "./src/types"
   ],
   "include": [
-    "src"
+    "src",
+    "types.d.ts"
   ]
 }

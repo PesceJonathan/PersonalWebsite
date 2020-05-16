@@ -118,7 +118,6 @@ export class ChessBoard extends Component<IProps, IState> {
             time = regex.exec(pgn);
             if (time) {
                 let timeFormatted: string = time[0].split("{[%clk ")[1];
-                console.log(timeFormatted);
                 times.push(timeFormatted.slice(0, -2));
             }
         } while (time);
@@ -129,7 +128,6 @@ export class ChessBoard extends Component<IProps, IState> {
 
 //Defining Styled-Components
 const Wrapper = styled.div`
-    margin: auto;
     display: flex;
     flex-direction: column;
     width: fit-content;

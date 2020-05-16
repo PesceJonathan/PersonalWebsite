@@ -3,11 +3,7 @@ import styled from "styled-components";
 import { Timer } from "./Timer";
 import { UserInformation } from "./UserInformation";
 
-export class PlayerInformation extends Component<IProps, any> {
-    constructor(props: IProps) {
-        super(props);
-    }
-
+export class PlayerInformation extends Component<IProps> {
     render() {
         let {username, rating, time} = this.props;
 

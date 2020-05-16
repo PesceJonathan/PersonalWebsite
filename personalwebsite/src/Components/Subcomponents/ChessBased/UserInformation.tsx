@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 export class UserInformation extends Component<IProps> {
-    constructor(props: IProps) {
-        super(props);
-    }
-
     render() {
         let {username, rating} = this.props;
         return (

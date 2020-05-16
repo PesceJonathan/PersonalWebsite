@@ -19,9 +19,9 @@ export class DonutGraph {
     public constructor(data: DonutGraphData[], id: string) {
         //Set the constants
         this.id = id;
-        this.hoverRadius = 0.9;
-        this.outerRadius = 0.8;
-        this.innerRadius = 0.5;
+        this.hoverRadius = 0.95;
+        this.outerRadius = 0.85;
+        this.innerRadius = 0.55;
         this.hoverOpacity = 0.25;
         this.width = 0;
         this.height = 0;
@@ -101,7 +101,7 @@ export class DonutGraph {
         this.drawLine(svg, x, y);
         this.drawLine(svg, x, -y);
 
-        this.Tooltip.style("font-size", fontSize / 2 + "px");
+        this.Tooltip.style("font-size", fontSize / 1.5 + "px");
 
         //Increase the offset to add space between the lines and text (done in specific order to replicate chess.com)
         offset *= 1.9;
@@ -256,12 +256,6 @@ export class DonutGraph {
     private capitalize(word: string): string {
         return word.charAt(0).toUpperCase() + word.slice(1);
     }
-}
-
-export interface DonutGraphData {
-    title: string,
-    result: number,
-    colour: string,
 }
 
 interface DataWithPercentage {
