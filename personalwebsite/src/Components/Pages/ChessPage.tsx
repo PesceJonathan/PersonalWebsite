@@ -4,9 +4,31 @@ import { StatsForGameMode } from "../Subcomponents/StatsForGameMode";
 import { IGame } from "../../types/chess-com";
 import { ChessProfile } from "../Subcomponents/ChessBased/ChessProfiles";
 import styled from "styled-components";
+import { getChessData } from "../../Utilities/ChessAPIFetcher";
 
-export class ChessPage extends Component<IProps> {
+export class ChessPage extends Component<IProps, IState> {
+    constructor(props: IProps) {
+        super(props);
+
+        let {username} = this.props;
+
+        this.state = {
+            isLoadingData: true,
+            userInfo: userInfo,
+            stats: [tempGameModeStats, tempGameModeStats, tempGameModeStats]
+        }
+        
+        getChessData(username).then((res: ChessInformation) => this.setState({isLoadingData: false, userInfo: res.userInfo, stats: res.stats}));
+    }
+
     render() {
+        let {isLoadingData, userInfo, stats} = this.state;
+
+        if (isLoadingData) {
+            //Change to be a loading screen (maybe a spinning pawn)
+            return <div></div>;
+        }
+
         return(
             <>
                 <BoardAndProfile>
@@ -14,9 +36,7 @@ export class ChessPage extends Component<IProps> {
                     <ChessBoard game={tempData}/>
                 </BoardAndProfile>
                 <Stats>
-                    <StatsForGameMode title={"Blizt"} barGraphData={barGraphData} donutGraphData={donutGraphData}></StatsForGameMode>
-                    <StatsForGameMode title={"Rapid"} barGraphData={barGraphData} donutGraphData={donutGraphData}></StatsForGameMode>
-                    <StatsForGameMode title={"Bullet"} barGraphData={barGraphData} donutGraphData={donutGraphData}></StatsForGameMode>
+                    {stats.map((stat: GameModeStats) => <StatsForGameMode title={stat.header} barGraphData={stat.rating} donutGraphData={stat.record}/>)}
                 </Stats> 
             </>
         );
@@ -25,6 +45,12 @@ export class ChessPage extends Component<IProps> {
 
 interface IProps {
     username: string
+}
+
+interface IState {
+    isLoadingData: boolean, 
+    userInfo: ChessUserInformation,
+    stats: GameModeStats[]
 }
 
 const BoardAndProfile = styled.div`
@@ -80,7 +106,7 @@ const tempData: IGame = {
         color: "#b33430"
     }
   ]
-  
+
   let donutGraphData: DonutGraphData[] = [
     {
     title: "loss",
@@ -99,13 +125,20 @@ const tempData: IGame = {
   }, 
   ]
 
-  const userInfo = {
+  let tempGameModeStats: GameModeStats = {
+      header: "Blitz",
+      rating: barGraphData,
+      record: donutGraphData
+  }
+
+  const userInfo: ChessUserInformation = {
     avatar: undefined,
     profileLink: "https://www.chess.com/member/pescethefish",
     username: "PesceTheFish",
     lastOnline: "May 15th 2020",
     status: "Premium",
-    followers: "7",
+    followers: 7,
     joined: "May 15th 2018",
-    location: "Montreal"
+    location: "Montreal",
+    name: "Jonathan Pesce"
 }

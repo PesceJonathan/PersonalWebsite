@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export class ChessProfile extends Component<IProps> {
     render() {
-        let {avatar, profileLink, username, lastOnline, status, followers, joined, location, className } = this.props;
+        let {avatar, profileLink, username, lastOnline, status, followers, joined, location, name, className } = this.props;
         avatar = avatar ?? "https://www.chess.com/bundles/web/images/user-image.007dad08.svg";
 
         return (
@@ -15,9 +15,17 @@ export class ChessProfile extends Component<IProps> {
                 </UserIdentifier>
                 <DataContainer>
                     <Data>
-                        <Header>Location</Header>
-                        <div>{location}</div>
+                        <Header>Name</Header>
+                        <div>{name}</div>
                     </Data> 
+                    {
+                        location ?
+                        <Data>
+                            <Header>Location</Header>
+                            <div>{location}</div>
+                        </Data> 
+                        : ""
+                    }
                     <Data>
                         <Header>Last Online</Header>
                         <div>{lastOnline}</div>
@@ -82,8 +90,9 @@ interface IProps {
     username: string,
     lastOnline: string,
     status: string,
-    followers: string,
+    followers: number,
     joined: string,
     location: string,
-    className: string
+    className: string,
+    name: string
 }
