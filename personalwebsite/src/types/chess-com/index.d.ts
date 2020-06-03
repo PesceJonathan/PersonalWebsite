@@ -12,6 +12,10 @@ export interface IGame {
     black: IPlayerInformation
 }
 
+export interface GamesResponse {
+    games: IGame[],
+}
+
 export interface IPlayerInformation {
     rating: number, 
     result: string,

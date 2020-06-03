@@ -31,5 +31,6 @@ interface ChessUserInformation {
 
 interface ChessInformation {
     userInfo: ChessUserInformation,
-    stats: GameModeStats[]
+    stats: GameModeStats[],
+    games: any
 }

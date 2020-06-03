@@ -1,4 +1,5 @@
 import React from 'react';
+import "./styles/globalstyles.css";
 import { ChessPage } from './Components/Pages/ChessPage';
 
 

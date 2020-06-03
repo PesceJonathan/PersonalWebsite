@@ -1,4 +1,5 @@
 import { UserInfoResponse, PlayerStatsResponse, ChessStats } from "../types/chess-com";
+import { RetrieveGames } from "./RetrieveGames";
 
 export const getChessData = (username: string): Promise<ChessInformation> => 
 {
@@ -11,24 +12,38 @@ export const getChessData = (username: string): Promise<ChessInformation> =>
         let UserStatsPromise = fetch(`https://api.chess.com/pub/player/${username}/stats`)
                                     .then((res: Response) => res.json()); 
 
-        Promise.all([UserInformationPromise, UserStatsPromise])
-            .then((values: any[]) => {
-                let userInfoRes: UserInfoResponse = values[0];
-                let userInformation: ChessUserInformation = getUserInformation(userInfoRes);
+        let onlineStatusPromise = fetch(`https://api.chess.com/pub/player/${username}/is-online`)
+                                .then((res: Response) => res.json()); 
 
-                let userStatsResponse: PlayerStatsResponse = values[1];
+        let gameURLS = fetch(`https://api.chess.com/pub/player/pescethefish/games/archives`)
+                        .then((res: Response) => res.json());
+        
+
+        Promise.all([UserInformationPromise, onlineStatusPromise, UserStatsPromise, gameURLS])
+            .then((values: any[]) => {
+                //Retrieves user information 
+                let userInfoRes: UserInfoResponse = values[0];
+                let online: boolean = values[1];
+                let userInformation: ChessUserInformation = getUserInformation(userInfoRes, online);
+
+                //Retrieves users stats
+                let userStatsResponse: PlayerStatsResponse = values[2];
                 let userStats: GameModeStats[] = getUserStats(userStatsResponse);
+
+                //Retrieve the url of the user's games
+                let usersGames: string[] = values[3].archives;
+                let games = new RetrieveGames(usersGames);
 
                 resolve({
                     userInfo: userInformation,
-                    stats: userStats
+                    stats: userStats,
+                    games: games,
                 });
             })
     })
 }
 
 function getUserStats(res: PlayerStatsResponse): GameModeStats[] {
-    debugger;
     return [
         getGameModeStats(res.chess_rapid, "Rapid"),
         getGameModeStats(res.chess_bullet, "Bullet"),
@@ -76,14 +91,14 @@ function generateDonutGraphData(title: string, result: number, colour: string): 
     }
 }
 
-function getUserInformation(res: UserInfoResponse): ChessUserInformation {
+function getUserInformation(res: UserInfoResponse, online: boolean): ChessUserInformation {
     let {avatar, url, name, last_online, status, followers, joined, location, username } = res;
 
     return {
         avatar: avatar,
         profileLink: url,
         username: username,
-        lastOnline: convertNumberToDate(last_online),
+        lastOnline: online ? "Currently" : convertNumberToDate(last_online),
         status: capitalizeFirstLetter(status),
         followers: followers,
         joined: convertNumberToDate(joined),
@@ -122,7 +137,6 @@ function capitalizeFirstLetter(word: string): string {
 
 //TODO needs to be what throws the user not found exception 
 //TODO needs to handle different error codes i.e. res.ok()
-
 
 //Define the constants for Dates
 const months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

@@ -6,6 +6,9 @@ import styled from "styled-components";
 import { PlayerInformation } from "./PlayerInformation";
 import { IGame } from "../../../types/chess-com";
 import { ChessInstance } from "chess.js";
+import { ChessEndScoreCard } from "./ChessEndScoreCard";
+import { MoveCard } from "./MoveCard";
+import { IMove } from "../../../types/ChessPage";
 
 
 //Issue with typescript for now: https://github.com/jhlywa/chess.js/issues/208
@@ -33,6 +36,8 @@ export class ChessBoard extends Component<IProps, IState> {
     private times: string[];
     private chess: ChessInstance;
     private moveIndex: number;
+    private timeFormat: number;
+    private increment: number;
 
     constructor(props: IProps) {
         super(props);
@@ -45,31 +50,63 @@ export class ChessBoard extends Component<IProps, IState> {
 
         this.moves = this.retrieveMoves(game.pgn);
         this.times = this.retrieveTimes(game.pgn);
+        this.timeFormat = parseInt(game.time_control);
+        this.increment = parseInt(game.time_control.split("+")[1] ?? "0")
 
         this.state = {
             whiteTime: startTime,
             blackTime: startTime,
-            fenPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" //Starting position for FEN
+            fenPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", //Starting position for FEN
+            gameEnded: false,
+            movesPlayed: []
         }
 
         this.nextMove = this.nextMove.bind(this);
+    }
+
+    componentWillReceiveProps(props: IProps) {
+        let {game} = props;
+        let startTime = parseInt(game.time_control) / 60 + ":00";
+
+        this.chess = new Chess();
+        this.moveIndex = 0;
+
+        this.moves = this.retrieveMoves(game.pgn);
+        this.times = this.retrieveTimes(game.pgn);
+
+        this.state = {
+            whiteTime: startTime,
+            blackTime: startTime,
+            fenPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", //Starting position for FEN
+            gameEnded: false,
+            movesPlayed: []
+        }
     }
 
     /**
      * Everytime the component is redrawn, wait a second to play the next move
      */
     componentDidMount() {
-        setInterval(this.nextMove, 1000); 
+        let { gameEnded } = this.state;
+
+        if (!gameEnded)
+            setInterval(this.nextMove, 1000); 
     }
 
     render() {
         let {game} = this.props;
+        let {gameEnded, movesPlayed, fenPosition, blackTime, whiteTime} = this.state;            
+
         return (
+            <>
             <Wrapper>
-                <PlayerInformation username={game.black.username} rating={game.black.rating} time={this.state.blackTime}/>
-                <div className="merida"><Chessground fen={this.state.fenPosition}/></div>
-                <PlayerInformation username={game.white.username} rating={game.white.rating} time={this.state.whiteTime}/>
+                <PlayerInformation username={game.black.username} rating={game.black.rating} time={blackTime}/>
+                <div className="merida"><Chessground fen={fenPosition}/></div>
+                <PlayerInformation username={game.white.username} rating={game.white.rating} time={whiteTime}/>
+                {gameEnded ? <ChessEndScoreCard white={game.white} black={game.black}/> : ""}
             </Wrapper>
+            <MoveCard moves={movesPlayed} timeFormat={this.timeFormat}/>
+            </>
         );
     }
 
@@ -78,16 +115,32 @@ export class ChessBoard extends Component<IProps, IState> {
      * as the timers for the player who played.
      */
     private nextMove() {
-        let {whiteTime, blackTime} = this.state;
+        //If no more moves then set game to ended
+        if (this.moves.length === this.moveIndex) {
+            if (!this.state.gameEnded) {
+                this.setState({gameEnded: true});
+                window.setTimeout(this.props.resetGame, 5000);
+            }
+            return;
+        }
+
+        let {whiteTime, blackTime, movesPlayed} = this.state;
 
         if (this.moveIndex % 2 === 0) {
-            whiteTime = this.times[this.moveIndex];
+            let newTime = this.times[this.moveIndex];
+            movesPlayed.push({moves: [this.moves[this.moveIndex]], times: [parseInt(whiteTime) - (parseInt(newTime) - this.increment)]})
+            whiteTime = newTime;
         } else {
+            let newTime = this.times[this.moveIndex];
+            debugger;
+            let index = Math.floor(this.moveIndex / 2);
+            movesPlayed[index].moves.push(this.moves[this.moveIndex]);
+            movesPlayed[index].times.push(parseInt(blackTime) - (parseInt(newTime) - this.increment))
             blackTime = this.times[this.moveIndex];
         }
 
         this.chess.move(this.moves[this.moveIndex++]);
-        this.setState({whiteTime: whiteTime, blackTime: blackTime, fenPosition: this.chess.fen()});
+        this.setState({whiteTime: whiteTime, blackTime: blackTime, fenPosition: this.chess.fen(), movesPlayed: movesPlayed});
     }
     
     /**
@@ -131,15 +184,19 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: fit-content;
+    margin: 0px 30px;
 `
 
 //Define props and state
 interface IProps {
-    game: IGame
+    game: IGame,
+    resetGame: VoidFunction
 }
 
 interface IState {
     whiteTime: string,
     blackTime: string, 
-    fenPosition: string
+    fenPosition: string,
+    gameEnded: boolean,
+    movesPlayed: IMove[]
 }
