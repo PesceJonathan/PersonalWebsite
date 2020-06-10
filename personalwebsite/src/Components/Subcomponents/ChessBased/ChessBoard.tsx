@@ -128,19 +128,37 @@ export class ChessBoard extends Component<IProps, IState> {
 
         if (this.moveIndex % 2 === 0) {
             let newTime = this.times[this.moveIndex];
-            movesPlayed.push({moves: [this.moves[this.moveIndex]], times: [parseInt(whiteTime) - (parseInt(newTime) - this.increment)]})
+            movesPlayed.push({moves: [this.moves[this.moveIndex]], times: [this.calculateTimeTaken(whiteTime, newTime, this.increment)]})
             whiteTime = newTime;
         } else {
             let newTime = this.times[this.moveIndex];
-            debugger;
             let index = Math.floor(this.moveIndex / 2);
             movesPlayed[index].moves.push(this.moves[this.moveIndex]);
-            movesPlayed[index].times.push(parseInt(blackTime) - (parseInt(newTime) - this.increment))
+            movesPlayed[index].times.push(this.calculateTimeTaken(blackTime, newTime, this.increment))
             blackTime = this.times[this.moveIndex];
         }
 
         this.chess.move(this.moves[this.moveIndex++]);
         this.setState({whiteTime: whiteTime, blackTime: blackTime, fenPosition: this.chess.fen(), movesPlayed: movesPlayed});
+    }
+
+    private calculateTimeTaken(oldTime: string, newTime: string, increment: number) {
+        let oldTimeSec: number = this.parseTimeIntoSeconds(oldTime);
+        let newTimeSec: number = this.parseTimeIntoSeconds(newTime);
+
+        return Math.ceil((oldTimeSec - (newTimeSec - increment)) * 10) / 10;
+    }
+
+    private parseTimeIntoSeconds(time: string) {
+        let timeValues: string[] = time.split(':');
+        let totalSum: number = 0;
+        let numOfTimes: number = timeValues.length - 1;
+
+        for (let i = numOfTimes; i >= 0; i--) {
+            totalSum += parseFloat(timeValues[i]) * Math.pow(60,  numOfTimes - i);
+        }
+
+        return totalSum;
     }
     
     /**

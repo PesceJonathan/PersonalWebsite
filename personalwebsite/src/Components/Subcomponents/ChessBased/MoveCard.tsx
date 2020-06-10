@@ -15,13 +15,19 @@ export class MoveCard extends Component<IProps> {
     }
 
     private renderTime(time: number, index: number) {
-        let width: number =  (this.props.timeFormat / 12) / time;
+        let constTime = this.props.timeFormat / 10;
+        let width: number =  (constTime - time) / constTime;
+        
+        if (width < 0) 
+            width = 0;
+
+        width = (1 - width) * 100;
 
         if (width > 100)
             width = 100;
 
         return (
-            <Time>{index % 2 == 0 ? <WhiteTime style={{width: width + "%"}}/> : <BlackTime style={{width: width + "%"}}/>} {time}</Time>
+            <Time>{index % 2 == 0 ? <WhiteTime style={{width: width + "%"}}/> : <BlackTime style={{width: width + "%"}}/>} {time.toFixed(1)}</Time>
         );
     }
 
@@ -47,7 +53,7 @@ interface IProps {
 
 const Card = styled.div`
     height: 340px;
-    width: 150px;
+    width: 200px;
     background-color: #f1f1f1;
     border: 1px gray solid;
     border-radius: 10px;
@@ -57,22 +63,40 @@ const MoveAndTime = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 
     height: 21px;
     padding: 5px 0px;
-    width: 100%;
+    margin: 0px 4px;
+    width: calc(100% - 8px);
 `
 
 const Moves = styled.div`
     overflow: auto;
+    height: calc(100% - 24px);
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #666;
+        border-radius: 20px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #ddd;
+        border-radius: 20px;
+    }
 `
 
 const Move = styled.div`
     font-weight: 450;
-    font-size: 18px;
+    font-size: 16px;
 
 `
 const Title = styled.div`
+    height: fit-content;
     width: 100%;
     border-bottom: 1px black solid;
     font-size: 20px;
@@ -82,8 +106,8 @@ const Title = styled.div`
 `
 
 const Times = styled.div`
-    height: 100%; 
-    width: 50%;
+    height: 100%;
+    width: 40%;
 
     display: flex;
     flex-direction: column;
