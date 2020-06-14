@@ -15,7 +15,7 @@ export class MoveCard extends Component<IProps> {
     }
 
     private renderTime(time: number, index: number) {
-        let constTime = this.props.timeFormat / 10;
+        let constTime = this.props.timeFormat / 8;
         let width: number =  (constTime - time) / constTime;
         
         if (width < 0) 

@@ -15,6 +15,7 @@ export class UserInformation extends Component<IProps> {
 //Defining Styled-Components
 const Wrapper = styled.div`
     display: flex;
+    color: lightgrey;
 `
 
 interface IProps {

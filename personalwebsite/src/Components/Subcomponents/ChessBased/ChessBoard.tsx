@@ -43,7 +43,7 @@ export class ChessBoard extends Component<IProps, IState> {
         super(props);
 
         let {game} = this.props;
-        let startTime = parseInt(game.time_control) / 60 + ":00";
+        let startTime = (parseInt(game.time_control) / 60) + ":00";
 
         this.chess = new Chess();
         this.moveIndex = 0;
@@ -89,21 +89,27 @@ export class ChessBoard extends Component<IProps, IState> {
     componentDidMount() {
         let { gameEnded } = this.state;
 
+        //Remove the coordinates since the react-chess is broken
+        let coords = document.getElementsByTagName("coords");
+        while (coords.length != 0) 
+            coords[0].remove();
+        
+
         if (!gameEnded)
             setInterval(this.nextMove, 1000); 
     }
 
     render() {
-        let {game} = this.props;
+        let {game, currentUser} = this.props;
         let {gameEnded, movesPlayed, fenPosition, blackTime, whiteTime} = this.state;            
 
         return (
             <>
             <Wrapper>
                 <PlayerInformation username={game.black.username} rating={game.black.rating} time={blackTime}/>
-                <div className="merida"><Chessground fen={fenPosition}/></div>
+                <div className="merida"><Chessground coordinates={false} fen={fenPosition} viewOnly={true}/></div>
                 <PlayerInformation username={game.white.username} rating={game.white.rating} time={whiteTime}/>
-                {gameEnded ? <ChessEndScoreCard white={game.white} black={game.black}/> : ""}
+                {gameEnded ? <ChessEndScoreCard white={game.white} black={game.black} currentUser={currentUser}/> : ""}
             </Wrapper>
             <MoveCard moves={movesPlayed} timeFormat={this.timeFormat}/>
             </>
@@ -188,8 +194,39 @@ export class ChessBoard extends Component<IProps, IState> {
         do {
             time = regex.exec(pgn);
             if (time) {
-                let timeFormatted: string = time[0].split("{[%clk ")[1];
-                times.push(timeFormatted.slice(0, -2));
+                let timeFormatted: string[] = time[0].split("{[%clk ")[1].slice(0, -2).split(':');
+                let hours = parseInt(timeFormatted[0]);
+                let minutes = parseInt(timeFormatted[1]);
+                let seconds = parseFloat(timeFormatted[2]);
+                let finalTime = "";
+
+                debugger;
+
+                if (!hours && hours != 0) {
+                    finalTime += hours + ":";
+                    if (minutes < 10)
+                        finalTime += "0" + minutes;
+                    else 
+                        finalTime += minutes + ":";
+                } else {
+                    finalTime += minutes + ":";
+                }
+
+                if (minutes > 0) {
+                    if (seconds < 10) {
+                        finalTime += "0" + Math.floor(seconds);
+                    } else {
+                        finalTime += Math.floor(seconds);
+                    }
+                } else {
+                    if (seconds < 10) {
+                        finalTime += "0" + seconds;
+                    } else {
+                        finalTime += seconds;
+                    }
+                }
+                
+                times.push(finalTime);
             }
         } while (time);
 
@@ -199,6 +236,8 @@ export class ChessBoard extends Component<IProps, IState> {
 
 //Defining Styled-Components
 const Wrapper = styled.div`
+    position: relative;
+
     display: flex;
     flex-direction: column;
     width: fit-content;
@@ -208,6 +247,7 @@ const Wrapper = styled.div`
 //Define props and state
 interface IProps {
     game: IGame,
+    currentUser: string,
     resetGame: VoidFunction
 }
 

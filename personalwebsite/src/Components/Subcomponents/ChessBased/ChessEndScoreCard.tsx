@@ -1,37 +1,54 @@
 import React, { Component } from "react";
 import { IPlayerInformation } from "../../../types/chess-com";
+import styled from "styled-components";
 
 export class ChessEndScoreCard extends Component<IProps> {
     render() {
-        let {white, black} = this.props;
-        let outcome: string = this.determineOutcome(white, black);
+        let {white, black, currentUser} = this.props;
 
         return (
-            <div>   
-                <div>Game Over</div>
-                <div>{outcome}</div>
-            </div>
+            <GameCard>   
+                {this.determineOutcome(white, black, currentUser)}
+            </GameCard>
         );
     }
 
-    private determineOutcome(white: IPlayerInformation, black: IPlayerInformation): string {
+    private determineOutcome(white: IPlayerInformation, black: IPlayerInformation, currentUser: string): JSX.Element {
         let winner: string;
         let loser: string;
         let result: string;
+        let colour: string = red; 
+        let endGameResult: string;
 
         if (white.result === "win") {
             winner = white.username;
             loser = black.username;
             result = black.result;
+
+            endGameResult = this.getEndResult(winner, loser, result);
+
+            if (white.username === currentUser)
+                colour = green;
         } else if (black.result === "win") {
             winner = black.username;
             loser = white.username;
             result = white.result;
+
+            endGameResult = this.getEndResult(winner, loser, result);
+
+            if (black.username === currentUser)
+                colour = green;
         } else {
-            return this.drawType(white.result);
+            colour = gray;
+            endGameResult = this.drawType(white.result);
         }
 
-        return this.getEndResult(winner, loser, result);
+        return (
+            <>
+                <Title color={colour}>Game Over</Title>
+                <GameResult><GameText>{endGameResult}</GameText></GameResult>
+            </>
+        )
     }
 
     private drawType(result: string) {
@@ -62,5 +79,45 @@ export class ChessEndScoreCard extends Component<IProps> {
 //Define the props
 interface IProps {
     white: IPlayerInformation,
-    black: IPlayerInformation
+    black: IPlayerInformation,
+    currentUser: string
 }
+
+//Styled components
+const GameCard = styled.div`
+    position: absolute;
+    left: 15%;
+    top: 35%;
+    height: 30%;
+    width: 70%;
+    box-shadow: 2px;
+    border-radius: 15px;
+    z-index: 10;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+`
+
+const Title = styled.div`
+    text-align: center;
+    width: 100%;
+    padding: 4px 0px;
+    background-color: ${props => props.color};
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    font-size: 20px;
+`
+const GameResult = styled.div`
+    display: flex;
+    height: 77px;
+`
+
+const GameText = styled.div`
+    justify-self: center;
+    align-self: center;
+    padding: 0px 10px;
+`
+
+const green = "#769656";
+const red = "#b33430";
+const gray = "#a7a6a2";

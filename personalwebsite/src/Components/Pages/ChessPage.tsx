@@ -41,7 +41,8 @@ export class ChessPage extends Component<IProps, IState> {
 
     render() {
         let {isLoadingData, userInfo, stats, game} = this.state;
-
+        let {username} = this.props;
+ 
         if (isLoadingData) {
             //Change to be a loading screen (maybe a spinning pawn)
             return <div></div>;
@@ -51,7 +52,7 @@ export class ChessPage extends Component<IProps, IState> {
             <Page>
                 <BoardAndProfile>
                     <Profile className="" {...userInfo}/>
-                    <ChessBoard game={game} resetGame={this.changeGame}/>
+                    <ChessBoard game={game} resetGame={this.changeGame} currentUser={username}/>
                 </BoardAndProfile>
                 <Stats>
                     {stats.map((stat: GameModeStats) => <StatsForGameMode title={stat.header} barGraphData={stat.rating} donutGraphData={stat.record}/>)}
@@ -83,6 +84,8 @@ const Page = styled.div`
     background-image: url(${background});
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
 `
 
 const BoardAndProfile = styled.div`
@@ -94,13 +97,23 @@ const BoardAndProfile = styled.div`
 `
 
 const Profile = styled(ChessProfile)`
-    
+
 `
 
 const Stats = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
+
+    justify-self: center;
+    align-self: center;
+
+    background-color: lightgray;
+    width: fit-content;
+    padding: 30px 30px;
+
+    border-radius: 15px;
+    border: 2px solid black;
 `
 //Temp data for now
 const emptyGame: IGame = {
