@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from "react";
-import { BarChart } from '../../Utilities/BarChart';
+import { BarChart } from '../../../Utilities/BarChart';
 import styled from 'styled-components';
 
 export class BarChartComponent extends Component<IProps> {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from "react";
-import { DonutGraph } from '../../Utilities/DonutGraphs';
+import { DonutGraph } from '../../../Utilities/DonutGraphs';
 import styled from 'styled-components';
 
 export class DonutGraphComponent extends Component<IProps> {

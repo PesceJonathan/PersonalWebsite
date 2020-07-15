@@ -21,6 +21,7 @@ export const getChessData = (username: string): Promise<ChessInformation> =>
 
         Promise.all([UserInformationPromise, onlineStatusPromise, UserStatsPromise, gameURLS])
             .then((values: any[]) => {
+                debugger;
                 //Retrieves user information 
                 let userInfoRes: UserInfoResponse = values[0];
                 let online: boolean = values[1];
@@ -57,10 +58,18 @@ function getGameModeStats(data: ChessStats, title: string): GameModeStats {
     let red = "#b33430";
     let gray = "#a7a6a2";
 
+    if (!best)
+        best = {
+            game: "",
+            rating: 1200,
+            date: 0, 
+        };
+    
+
     let bestRating: BarGraphData = {
         domain: "Best",
         value: best.rating,
-        date: getFormattedDate(best.date),
+        date: getFormattedDate(best.date ?? 0),
         color: green
     }
 

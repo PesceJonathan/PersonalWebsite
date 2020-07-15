@@ -1,8 +1,8 @@
 import React from 'react';
 import { Component } from "react";
 import styled from 'styled-components';
-import { DonutGraphComponent } from '../DonutGraphComponent';
-import { BarChartComponent } from '../BarChartComponent';
+import { DonutGraphComponent } from '../Graphs/DonutGraphComponent';
+import { BarChartComponent } from '../Graphs/BarChartComponent';
 
 export class StatsForGameMode extends Component<IProps> {
     render() {
