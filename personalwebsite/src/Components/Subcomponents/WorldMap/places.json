@@ -1,0 +1,10 @@
+{
+    "cities": [
+        {
+            "name": "Montreal",
+            "lat": "45.50884",
+            "long": "-73.58781",
+            "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Canada/Montreal.jpg"
+        }
+    ]
+}

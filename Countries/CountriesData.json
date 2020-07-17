@@ -1,0 +1,79 @@
+{
+    "Barbados": {
+        "name": "Barbados",
+        "details": "Rented a beautiful home with my family and grandparents for two weeks!!!",
+        "images": [
+            {
+                "src": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Barbados/Home.JPG"
+            },
+            {
+                "src": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Barbados/Resto.JPG"
+            }
+        ],
+        "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Flag_of_Barbados.svg/800px-Flag_of_Barbados.svg.png"
+    },
+    "Canada": {
+        "name": "Canada",
+        "details": "Canada is my home country and I have been lucky to have explored it from coast to coast!!! I have made my way to the island of Victoria, through the national parks in the Rockies, passing by parliment, running through the six, explored la belle province and ended in the beautiful maratimes.",
+        "images": [
+            {
+                "src": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Canada/Montreal.jpg",
+                "name": "Montreal"
+            }
+        ],
+        "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Canada.svg/800px-Flag_of_Canada.svg.png"
+    },
+    "Denmark": {
+        "name": "Denmark",
+        "details": "Weekend trip with my mom and sister exploring the wonderful city of Copenhagen!!",
+        "images": [
+            {
+                "src":  "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Denmark/Copenhagen.jpg"
+            },
+            {
+                "src":  "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Denmark/TivoliGardens.jpg",
+                "name": "Tivoli Garden"
+            }
+        ],
+        "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Canada.svg/800px-Flag_of_Canada.svg.png"
+   },
+   "France": {
+       "name": "France",
+       "details": "Probably one of my favorite countries in the world, was lucky enough to have first visited it in 2016 ",
+       "images": [
+            {
+                "src":  "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/Lyon.jpg",
+                "name": "Lyon"
+            },
+            {
+                "src":  "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/Annecy.jpg",
+                "name": "Annecy"
+            },
+            {
+                "src":  "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/Grenoble.jpg",
+                "name": "Grenoble"
+            },
+            {
+                "src":  "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/Marseille.jpg",
+                "name": "Marseille"
+            },            {
+                "src":  "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/AlpeDhuez.jpg",
+                "name": "Alpe D'Huez"
+            },
+            {
+                "src":  "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/AixLesBains.jpg",
+                "name": "Aix Les Bains"
+            },
+            {
+                "src":  "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/Annecy.jpg",
+                "name": "Annecy"
+            },
+            {
+                "src":  "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/Annecy.jpg",
+                "name": "Annecy"
+            }
+       ]
+
+   }
+}
+

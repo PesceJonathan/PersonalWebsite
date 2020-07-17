@@ -1,3 +1,11 @@
 Barcelona
 Rome
 Budapest
+
+
+// "Canada": {
+//     "name": "Canada",
+//     "details": "Canada is my home country and I have been lucky to have explored it from coast to coast!!! I have made my way to the island of Victoria, through the national parks in the Rockies, passing by parliment, running through the six, explored la belle province and ended in the beautiful maratimes.",
+//     "images": [""],
+//     "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Canada.svg/800px-Flag_of_Canada.svg.png"
+// }
