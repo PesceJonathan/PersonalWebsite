@@ -19,7 +19,7 @@ const TooltipContainer = styled.div`
     box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 1);
     overflow: hidden;
     background-color: white;
-    opacity: 0;
+    display: none;
 `
 
 const Information = styled.div`

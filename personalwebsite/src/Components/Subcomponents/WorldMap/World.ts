@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import {feature} from 'topojson-client';
+import { MathFunctions } from './MathFunctions';
 
 export class World {
 
@@ -8,13 +9,30 @@ export class World {
     private tooltipImage: any;
     private tooltipCityName: any;
     private tooltipDescription: any;
+    private gpos0: any;
+    private o0: any;
+    private projection: d3.GeoProjection;
+    private pathGenerator: any;
 
     constructor() {
+        // this.projection = d3.geoOrthographic();
+        this.projection = d3.geoNaturalEarth1();
+        this.pathGenerator = d3.geoPath().projection(this.projection);
+
+        let zoom: any = d3.zoom()
+        .scaleExtent([1, 20])
+        .on("zoom", () => {
+            this.svg.attr("transform", d3.event.transform);
+        });
+
         this.svg = d3.select("#WorldMap")
                     .append("svg")
                     .attr("viewBox", "0 0 960 500")
-                    .attr("width", "100vw")
-                    .attr("height", "100vh")
+                    .attr("width", "95%")
+                    .attr("height", "95%")
+                    .append("g")
+                    // .call(zoom)
+                    // .call(drag)
                     .append("g");
 
         //Change to store in session storate
@@ -30,20 +48,14 @@ export class World {
     }
 
     render(data: any) {
-        let projection: d3.GeoProjection = d3.geoNaturalEarth1();
-        let pathGenerator = d3.geoPath().projection(projection);
-
         this.svg.append('path')
-            .attr('d', pathGenerator({type: "Sphere"}))
+            .attr('d', this.pathGenerator({type: "Sphere"}))
             .attr("fill", "blue");
 
         this.svg.selectAll('path')
             .data(data.features)
             .enter().append('path')
-            .attr('d', pathGenerator)
-            .on("mousemove", (d: any, i: any, n: any) => {
-                console.log(d3.mouse(n[i]));
-            });
+            .attr('d', this.pathGenerator);
 
         var circles = this.svg.selectAll("circle").data(tempCity);
 
@@ -53,17 +65,16 @@ export class World {
                         .attr("height", 10)
                         .attr("width", 10)
                         .attr("transform", "translate(-5, -10)")
-                        .attr("x", (d: any) => (projection([d.long, d.lat]) as number[])[0])
-                        .attr("y", (d: any) => (projection([d.long, d.lat]) as number[])[1])
+                        .attr("x", (d: any) => (this.projection([d.long, d.lat]) as number[])[0])
+                        .attr("y", (d: any) => (this.projection([d.long, d.lat]) as number[])[1])
                         .on("mouseover", (d: any) => {
-                            this.tooltip.style("opacity", 1);
+                            this.tooltip.style("display", "block");
                             this.tooltipImage.attr("src", d.img);
                             this.tooltipCityName.html(d.name);
                             this.tooltipDescription.html(d.description);
                         })
-                        .on("mouseleave",(d: any) => this.tooltip.style("opacity", 0))
+                        .on("mouseleave",(d: any) => this.tooltip.style("display", "none"))
                         .on("mousemove", (d: any, i: any, n: any) => {
-            
                             let tooltipWidth: number = this.tooltip.node()?.offsetWidth ?? 0;
                             let tooltipHeight: number = this.tooltip.node()?.offsetHeight ?? 0;
             
@@ -83,9 +94,16 @@ export class World {
 const tempCity = [
     {
         "name": "Montreal",
-        "description": "Home Town Bithc",
         "lat": "45.50884",
         "long": "-73.58781",
-        "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Canada/Montreal.jpg"
+        "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Canada/Montreal.jpg",
+        "description": "Born and raised Montrealer who has been dissapointed 21 years in a row by the Montreal Canadiens!"
+    },
+    {
+        "name": "Aix Les Bains",
+        "lat": "45.6923",
+        "long": "5.9090",
+        "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/AixLesBains.jpg",
+        "description": "Weekend trip where we climbed up le Mont Revard, which has an elevation of <p>fff</p> "
     }
 ]

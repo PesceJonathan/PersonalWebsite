@@ -4,7 +4,29 @@
             "name": "Montreal",
             "lat": "45.50884",
             "long": "-73.58781",
-            "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Canada/Montreal.jpg"
+            "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Canada/Montreal.jpg",
+            "description": "Born and raised Montrealer who has been dissapointed 21 years in a row by the Montreal Canadiens!"
+        },
+        {
+            "name": "Aix Les Bains",
+            "lat": "45.6923",
+            "long": "5.9090",
+            "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/AixLesBains.jpg",
+            "description": "Weekend trip where we climbed up le Mont Revard, which has an elevation of 1,538 m. It took us over 4 hours to climb.<a href=\"https://www.youtube.com/watch?v=kTlxG64MiFE\">Check Video Of The Experience</a>"
+        },
+        {
+            "name": "Alpe D'Huez",
+            "lat": "45.0906",
+            "long": "6.0649",
+            "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/AlpeDhuez.jpg",
+            "description": "Day trip where we went skiing on top of Alpe D'Huez, a moutain in the middle of the Alpes. The day where me and Niv had to spring after a bus carrying our equipement because the metro wasn't working :(. I also fell down a mountain.... <a href=\"https://www.youtube.com/watch?v=u0IZLyWG1Co&t\">Check Video Of The Experience</a>"
+        },
+        {
+            "name": "Annecy",
+            "lat": "45.8992",
+            "long": "6.1294",
+            "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/Annecy.jpg",
+            "description": "One of my favorite cities in the world, been lucky enough to have been twice in my life!!! The city know for making me discovered the amazing tarttiflette and where Franco order a tub of 9 ice cream... <a href=\"https://www.youtube.com/watch?v=qH5qPy_1L_g\">Check Video Of The Experience</a>"
         }
     ]
 }

@@ -9,6 +9,10 @@ export class WorldMap extends Component {
         new World();
     }
 
+    shouldComponentUpdate() {
+        return false;
+    }
+
     render() {
         return (
             <WorldMapStyles id="WorldMap">
@@ -20,6 +24,10 @@ export class WorldMap extends Component {
 
 
 const WorldMapStyles = styled.div`
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
     position: relative;
     
     > * {
