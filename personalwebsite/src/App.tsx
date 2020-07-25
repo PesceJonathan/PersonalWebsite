@@ -1,7 +1,7 @@
 import React from 'react';
 import "./styles/globalstyles.css";
-import { ChessPage } from './Components/Pages/ChessPage';
-import { WorldMap } from './Components/Pages/WorldMap';
+// import { ChessPage } from './Content/Pages/Chess/ChessPage';
+import { WorldMap } from './Content/Pages/WorldMap/WorldMap';
 
 
 function App() {
