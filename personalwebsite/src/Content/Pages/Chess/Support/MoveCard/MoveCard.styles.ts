@@ -1,12 +1,30 @@
 import styled from "styled-components"
 
-export const Card = styled.div`
-    height: 340px;
+export const Card = styled.div<ICard>`
+    height: 345px;
     width: 200px;
     background-color: #f1f1f1;
     border: 1px gray solid;
     border-radius: 10px;
+    display: ${props => props.mobile ? "none" : "block"};
+    margin-left: ${props => props.mobile ? "30px" : "0px"};
+
+    @media (max-width: 768px) {
+        display: ${props => props.mobile ? "block" : "none"};
+    }
+
+    @media (max-width: 480px) {
+        margin-left: ${props => props.mobile ? "10px" : "0px"};
+    }
+
+    @media (max-width: 373px) {
+        margin-left: 0px;
+    }
 `
+
+interface ICard {
+    mobile: boolean
+}
 
 export const MoveAndTime = styled.div`
     display: flex;

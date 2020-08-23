@@ -75,13 +75,13 @@ export class ChessBoard extends Component<IProps, IState> {
         this.moves = this.retrieveMoves(game.pgn);
         this.times = this.retrieveTimes(game.pgn);
 
-        this.state = {
+        this.setState({
             whiteTime: startTime,
             blackTime: startTime,
             fenPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", //Starting position for FEN
             gameEnded: false,
             movesPlayed: []
-        }
+        });
     }
 
     /**
@@ -92,7 +92,7 @@ export class ChessBoard extends Component<IProps, IState> {
 
         //Remove the coordinates since the react-chess is broken
         let coords = document.getElementsByTagName("coords");
-        while (coords.length != 0) 
+        while (coords.length !== 0) 
             coords[0].remove();
         
 
@@ -106,6 +106,7 @@ export class ChessBoard extends Component<IProps, IState> {
 
         return (
             <>
+            <MoveCard mobile={true} moves={movesPlayed} timeFormat={this.timeFormat}/>
             <Wrapper>
                 <PlayerInformation username={game.black.username} rating={game.black.rating} time={blackTime}/>
                 <div className="merida"><Chessground coordinates={false} fen={fenPosition} viewOnly={true}/></div>
@@ -201,9 +202,7 @@ export class ChessBoard extends Component<IProps, IState> {
                 let seconds = parseFloat(timeFormatted[2]);
                 let finalTime = "";
 
-                debugger;
-
-                if (!hours && hours != 0) {
+                if (!hours && hours !== 0) {
                     finalTime += hours + ":";
                     if (minutes < 10)
                         finalTime += "0" + minutes;

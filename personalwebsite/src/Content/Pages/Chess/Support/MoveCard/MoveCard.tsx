@@ -5,7 +5,7 @@ import { Card, Moves, Time, WhiteTime, BlackTime, MoveAndTime, Move, Times, Titl
 export class MoveCard extends Component<IProps> {
     render() {
         return (
-            <Card>
+            <Card mobile={this.props.mobile ? true : false}>
                 <Title>Moves</Title>
                 <Moves>
                     {this.props.moves.map((move: IMove, i: number) => this.renderMove(move, i + 1))}
@@ -27,7 +27,7 @@ export class MoveCard extends Component<IProps> {
             width = 100;
 
         return (
-            <Time>{index % 2 == 0 ? <WhiteTime style={{width: width + "%"}}/> : <BlackTime style={{width: width + "%"}}/>} {time.toFixed(1)}</Time>
+            <Time>{index % 2 === 0 ? <WhiteTime style={{width: width + "%"}}/> : <BlackTime style={{width: width + "%"}}/>} {time.toFixed(1)}</Time>
         );
     }
 
@@ -36,7 +36,7 @@ export class MoveCard extends Component<IProps> {
 
         return (
             <MoveAndTime>
-                <Move>{moveNum}. {moves.map((move: string) => move + " ")}</Move>
+                <Move>{moveNum} {moves.map((move: string) => move + " ")}</Move>
                 <Times>
                     {times.map((time: number, index: number) => this.renderTime(time, index))}
                 </Times>
@@ -48,7 +48,8 @@ export class MoveCard extends Component<IProps> {
 //Define props
 interface IProps {
     timeFormat: number,
-    moves: IMove[]
+    moves: IMove[],
+    mobile?: boolean
 }
 
 

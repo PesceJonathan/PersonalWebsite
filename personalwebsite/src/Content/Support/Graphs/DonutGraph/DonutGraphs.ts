@@ -23,8 +23,8 @@ export class DonutGraph {
         this.outerRadius = 0.85;
         this.innerRadius = 0.55;
         this.hoverOpacity = 0.25;
-        this.width = 0;
-        this.height = 0;
+        this.width = 250;
+        this.height = 250;
         this.loadAnimation = 1000;
 
         //Calculate the percentage for each element of data
@@ -36,7 +36,6 @@ export class DonutGraph {
 
         this.Tooltip = d3.select("#" + this.id)
                          .append("div")
-                         .style("width", "fit-content")
                          .style("opacity", 0)
                          .style("background-color", "rgba(247,247,247,0.85)")
                          .style("border", "solid")
@@ -50,20 +49,13 @@ export class DonutGraph {
 
         //Append an svg to the div that will be used to draw our graph on
         this.svg = d3.select("#" + this.id)
-                    .append("svg");
+                    .append("svg")
+                    .attr("viewBox", "0 0 250 250");
     }
 
     public render() {
-        let radius: number = 0;
+        let radius: number = 125;
         let stroke: string = "white";
-        
-        //Grab the div that is holding the graph to get it's height and width and use it to define the radius
-        let containerDiv: HTMLElement|null = document.getElementById(this.id);
-        if (containerDiv) {
-            this.height = containerDiv.clientHeight;
-            this.width = containerDiv.clientWidth;
-            radius = Math.min(this.width, this.height) / 2;
-        }
 
         //Set once the expanded and hidden hover arc
         this.expandedHoverArc = d3.arc().innerRadius(radius * this.outerRadius - 0.1).outerRadius(radius * this.hoverRadius) as any;
@@ -71,9 +63,7 @@ export class DonutGraph {
 
         //Set the height and width of the svg and then append a g container to draw the graph
         let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
-        svg = this.svg.attr("height", this.height)
-                    .attr("width", this.width)
-                    .append("g")
+        svg = this.svg.append("g")
                     .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")");
 
         //Draw the graph and the text with the calculated values

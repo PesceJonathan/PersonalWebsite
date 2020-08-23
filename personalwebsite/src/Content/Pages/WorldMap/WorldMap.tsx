@@ -33,8 +33,8 @@ const WorldMapStyles = styled.div`
     overflow: hidden !important;
     
     > * {
-        fill: #b4f2b4;
-        stroke: black;
+        fill: #878787;
+        stroke: #595959;
         stroke-opacity: 1;
         stroke-width: 0.15px;
     }

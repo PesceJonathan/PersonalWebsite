@@ -7,15 +7,14 @@ import background from "../../Assets/background.jpeg";
 import { ChessBoard } from "./Support/ChessBoard/ChessBoard";
 import { StatsForGameMode } from "./Support/Stats/StatsForGameMode";
 import { ChessProfile } from "./Support/Profile/ChessProfiles";
+import { BarChartComponent } from "../../Support/Graphs/BarChart/BarChartComponent";
 
 export class ChessPage extends Component<IProps, IState> {
     private games?: RetrieveGames;
 
     constructor(props: IProps) {
         super(props);
-
-        let {username} = this.props;
-
+        
         this.games = undefined;
 
         this.state = {
@@ -24,7 +23,13 @@ export class ChessPage extends Component<IProps, IState> {
             game: emptyGame,
             stats: [],
         }
-        
+    
+        this.changeGame = this.changeGame.bind(this);
+    }
+
+    componentDidMount() {
+        let {username} = this.props;
+
         getChessData(username).then((res: ChessInformation) => {
             this.games = res.games;
             this.games?.getFirstGame().then((game: IGame) => {
@@ -32,7 +37,6 @@ export class ChessPage extends Component<IProps, IState> {
             });
         });
 
-        this.changeGame = this.changeGame.bind(this);
     }
 
     changeGame() {
@@ -50,6 +54,7 @@ export class ChessPage extends Component<IProps, IState> {
 
         return(
             <Page>
+                <BackgroundImage/>
                 <BoardAndProfile>
                     <Profile className="" {...userInfo}/>
                     <ChessBoard game={game} resetGame={this.changeGame} currentUser={username}/>
@@ -79,41 +84,61 @@ interface IState {
 const Page = styled.div`
     margin: 0px;
     padding: 0px;
-    height: 100vh;
-    width: 100vw;
-    background-image: url(${background});
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
     display: flex;
     flex-direction: column;
 `
 
+const BackgroundImage = styled.div`
+    background-image: url(${background});
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: -10;
+    width: 100vw;
+`
+
 const BoardAndProfile = styled.div`
+    align-items: center;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: center;
-    height: 400px;
+    margin: 5px 0px;
+
+    @media (max-width: 768px) {
+        margin-top: 30px;
+    }
 `
 
 const Profile = styled(ChessProfile)`
-
+    height: 335px;
 `
 
 const Stats = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
 
     justify-self: center;
     align-self: center;
 
     background-color: lightgray;
-    width: fit-content;
+    max-width: 685px;
+    width: 90%;
     padding: 30px 30px;
 
     border-radius: 15px;
     border: 2px solid black;
+
+    @media (max-width: 900px) {
+        padding: 30px 10px;
+    }
+    
+    @media (max-width: 768px) {
+        padding: 30px 10px;
+    }
 `
 //Temp data for now
 const emptyGame: IGame = {

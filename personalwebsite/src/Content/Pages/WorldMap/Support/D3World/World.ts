@@ -25,7 +25,7 @@ export class World {
             let k = d3.event.transform.k;
             let dim = Math.floor(10 / Math.sqrt(k)) - 1;  
             console.log( "translate(-" + (dim/2) + ", -" + dim + ")");
-            this.svg.selectAll(".pin").attr("height", dim + "px").attr("width", dim + "px").attr("transform", "translate(-" + (dim/2) + ", -" + dim + ")");
+            this.svg.selectAll(".pin").attr("height", dim + "px").attr("width", dim + "px").attr("transform", "translate(0, -" + dim + ")");
         });
 
         this.svg = d3.select("#WorldMap")
@@ -53,7 +53,7 @@ export class World {
     render(data: any) {
         this.svg.append('path')
             .attr('d', this.pathGenerator({type: "Sphere"}))
-            .attr("fill", "#C9E8FD");
+            .attr("fill", "rgb(32 33 35)");
 
         this.svg.selectAll('path')
             .data(data.features)
@@ -64,7 +64,8 @@ export class World {
 
         this.circles.enter()
                         .append("image")
-                        .attr("xlink:href", "https://image.flaticon.com/icons/svg/684/684908.svg")
+                        // .attr("xlink:href", "https://image.flaticon.com/icons/svg/684/684908.svg")
+                        .attr("xlink:href", (d:any) => d.pin)
                         .classed("pin", true)
                         .attr("height", 9)
                         .attr("width", 9)
@@ -82,7 +83,7 @@ export class World {
                             let tooltipWidth: number = this.tooltip.node()?.offsetWidth ?? 0;
                             let tooltipHeight: number = this.tooltip.node()?.offsetHeight ?? 0;
                             
-                            
+
             
                             this.tooltip.style("left", d3.event.clientX + "px")
                                         .style("top", d3.event.clientY + "px");

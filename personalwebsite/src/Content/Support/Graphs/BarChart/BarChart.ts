@@ -12,18 +12,16 @@ export class BarChart {
 
     constructor(data: BarGraphData[], id: string) {
         this.margins = {top: 10, right: 30, bottom: 30, left: 40};
-        this.height = 0;
-        this.width = 0;
+        this.height = 250;
+        this.width = 250;
     
         this.startAnimationTime = 1000;
         this.animationDuration = 700;
         this.id = id;
-        console.log(id);
         this.data = data;
 
     this.Tooltip = d3.select("#" + this.id)
         .append("div")
-        .style("width", "fit-content")
         .style("opacity", 0)
         .style("background-color", "rgba(247,247,247,0.85)")
         .style("border", "solid")
@@ -36,18 +34,9 @@ export class BarChart {
     }
 
     render() {
-        //Grab the div that is holding the graph to get it's height and width and use it to define the radius
-        let containerDiv: HTMLElement|null = document.getElementById(this.id);
-        if (containerDiv) {
-            this.height = containerDiv.clientHeight;
-            this.width = containerDiv.clientWidth;
-        }
-
-        console.log(this.id);
         let svg: d3.Selection<SVGGElement, unknown, HTMLElement, any> = d3.select("#" + this.id)
                                                                             .append("svg")
-                                                                            .attr("width", this.width)
-                                                                            .attr("height", this.height)
+                                                                            .attr("viewBox", "0 0 250 250")
                                                                             .append("g")
                                                                             .attr("transform", "translate(" + this.margins.left + "," + this.margins.top + ")");
 

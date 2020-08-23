@@ -59,6 +59,7 @@ const ProfileInformation = styled.div`
 `
 
 const StyledImage = styled.img`
+    border-radius: 6px;
     height: 50px;
     width: 50px;
     margin-right: 5px;

@@ -21,7 +21,6 @@ export const getChessData = (username: string): Promise<ChessInformation> =>
 
         Promise.all([UserInformationPromise, onlineStatusPromise, UserStatsPromise, gameURLS])
             .then((values: any[]) => {
-                debugger;
                 //Retrieves user information 
                 let userInfoRes: UserInfoResponse = values[0];
                 let online: boolean = values[1];

@@ -23,7 +23,7 @@ export class RetrieveGames {
     public retrieveNextGame(): IGame {
         let {games, gameCounter} = this;
 
-        if (games.length == 0)
+        if (games.length === 0)
             return backupGame;
 
         let game: IGame = games[gameCounter];
