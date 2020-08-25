@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Chessground from 'react-chessground';
-import 'react-chessground/dist/assets/chessground.css';
-import 'react-chessground/dist/assets/theme.css'; // Or your own chess theme
+// import 'react-chessground/dist/assets/theme.css'; // Or your own chess theme
+import 'react-chessground/dist/styles/chessground.css';
 import { ChessInstance } from "chess.js";
 import { PlayerInformation } from "../PlayerInformation/PlayerInformation";
 import { ChessEndScoreCard } from "../ScoreCard/ChessEndScoreCard";
@@ -109,7 +109,7 @@ export class ChessBoard extends Component<IProps, IState> {
             <MoveCard mobile={true} moves={movesPlayed} timeFormat={this.timeFormat}/>
             <Wrapper>
                 <PlayerInformation username={game.black.username} rating={game.black.rating} time={blackTime}/>
-                <div className="merida"><Chessground coordinates={false} fen={fenPosition} viewOnly={true}/></div>
+                <div className="merida"><Chessground style={{height: "320px", width: "320px"}} coordinates={false} fen={fenPosition} viewOnly={true} /></div>
                 <PlayerInformation username={game.white.username} rating={game.white.rating} time={whiteTime}/>
                 {gameEnded ? <ChessEndScoreCard white={game.white} black={game.black} currentUser={currentUser}/> : ""}
             </Wrapper>
