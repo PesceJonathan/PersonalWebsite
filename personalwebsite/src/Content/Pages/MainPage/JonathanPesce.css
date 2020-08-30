@@ -1,0 +1,11 @@
+@media (max-width: 600px) {
+    .react-parallax-bgimage {
+        left: 70% !important;
+    }
+}
+
+@media (max-width: 340px) {
+    .react-parallax-bgimage {
+        left: 100% !important;
+    }
+}
