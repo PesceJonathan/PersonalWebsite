@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Parallax, Background } from 'react-parallax';
 import "./JonathanPesce.css";
 import { Projects } from "./Support/Projects/Projects";
+import { Experiences } from "./Support/Experience/Experiences";
 
 export function JonathanPesce() {
 
@@ -17,6 +18,7 @@ export function JonathanPesce() {
                     </MainCoverImageInformation>
                 </CoverImage>
             </Parallax>
+            <Experiences/>
             <Projects/>
         </PersonalPage>
     )
