@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { MapPin, Link } from "react-feather";
 
-export function School({companyName, positionDate, title, description, location, link, animation}: IProps) {
+export function School({companyName, positionDate, title, description, location, link, linkTitle, animation}: IProps) {
     return (
         <ExperienceContainer>
             <CompanyInformation>
@@ -17,7 +17,7 @@ export function School({companyName, positionDate, title, description, location,
                 </PositionDescription>
                 <PositionDetails>
                     <Detail><MapPin size={20}/>{location}</Detail>
-                    <Detail><Link size={20}/><WorkLink onClick={() => { window.location = (link as any); }}>{link}</WorkLink></Detail>
+                    <Detail><Link size={20}/><WorkLink onClick={() => { window.location = (link as any); }}>{linkTitle}</WorkLink></Detail>
                 </PositionDetails>
             </PositionInformation>
         </ExperienceContainer>
@@ -31,7 +31,8 @@ export function School({companyName, positionDate, title, description, location,
         description: string, 
         location: string, 
         link: string, 
-        animation: JSX.Element
+        animation: JSX.Element,
+        linkTitle: string
     }
     
     const WorkLink = styled.span`
@@ -64,10 +65,6 @@ export function School({companyName, positionDate, title, description, location,
         
         > * {
             margin-right: 5px;
-        }
-
-        @media (max-width: 350px) {
-            font-size: 15px;
         }
     `
     

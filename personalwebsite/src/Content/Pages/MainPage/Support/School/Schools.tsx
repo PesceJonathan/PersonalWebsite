@@ -14,16 +14,16 @@ export function Schools() {
                 <Header>School</Header>
                 <ExperiencePage>
                     <School companyName={"Concordia University"} positionDate={"Sep 2019 - Current"} title={"Mathematics and Statistics and Computer Applications"} 
-                        location={"Montreal"} link={"https://www.concordia.ca/"} animation={CreateImageElement(Concordia)}
+                        location={"Montreal"} link={"https://www.concordia.ca/"} linkTitle={"concordia.ca"} animation={CreateImageElement(Concordia)}
                         description={"Working as an intern Software Developer Intern within a large digital team mainly contributing pages and bug fixs to the new e-commerce site and eventually individually creating a admin dashboard for the site. The sites were React based using Next.js working in a sprint."} />
                     <School companyName={"IUT de Lyon"} positionDate={"Feb 2019 - Jun 2019"} title={"Computer Science"} 
-                        location={"Lyon"} link={"https://iut.univ-lyon1.fr/"} animation={CreateImageElement(IUT)}
+                        location={"Lyon"} link={"https://iut.univ-lyon1.fr/"} linkTitle={"iut.univ-lyon1.fr"} animation={CreateImageElement(IUT)}
                         description={"Exchange program to complete my final semester of my DEC abroad in Lyon where I did around 2 months of studying and 3 months of working. "} />
-                    <School companyName={"Dawson College"} positionDate={"Aug 2016 - Jun 2019"} title={"Computer Science"} 
+                    <School companyName={"Dawson College"} positionDate={"Aug 2016 - Jun 2019"} linkTitle={"dawsoncollege.qc.ca"} title={"Computer Science"} 
                         location={"Montreal"} link={"https://www.dawsoncollege.qc.ca/"} animation={CreateImageElement(Dawson)}
                         description={"This program prepares its students to work as a software developer through the intense theoretical and practical work in Computer Science. Students gain experience creating state-of-the-art computer systems that support the needs and goals of modern businesses."} />
                     <School companyName={"Royal West Academy"} positionDate={"Aug 2011 - Jun 2016"} title={"Mathematics and Statistics and Computer Applications"} 
-                        location={"Montreal"} link={"http://www.royalwestacademy.com/"} animation={CreateImageElement(RoyalWest)}
+                        location={"Montreal"} link={"http://www.royalwestacademy.com/"} linkTitle={"royalwestacademy.com"} animation={CreateImageElement(RoyalWest)}
                         description={"During my time at Royal West Academy, I participated on the badminton and hockey team. I took part in the high math program and graduated with honors."} />
                 </ExperiencePage>
             </ProjectPage> 

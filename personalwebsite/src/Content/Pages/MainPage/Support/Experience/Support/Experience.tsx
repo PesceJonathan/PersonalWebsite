@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Plane } from "../WorkAnimations/Plane";
 import {MapPin, Link} from "react-feather"; 
 
-export function Experience({companyName, positionDate, title, description, location, link, animation}: IProps) {
+export function Experience({companyName, positionDate, title, description, location, link, linkTitle, animation}: IProps) {
     return (
         <ExperienceContainer>
             <CompanyInformation>
@@ -18,7 +18,7 @@ export function Experience({companyName, positionDate, title, description, locat
                 </PositionDescription>
                 <PositionDetails>
                     <Detail><MapPin size={20}/>{location}</Detail>
-                    <Detail><Link size={20}/><WorkLink onClick={() => { window.location = (link as any); }}>{link}</WorkLink></Detail>
+                    <Detail><Link size={20}/><WorkLink onClick={() => { window.location = (link as any); }}>{linkTitle}</WorkLink></Detail>
                 </PositionDetails>
             </PositionInformation>
         </ExperienceContainer>
@@ -32,7 +32,8 @@ interface IProps {
     description: string, 
     location: string, 
     link: string, 
-    animation: JSX.Element
+    animation: JSX.Element,
+    linkTitle: string
 }
 
 const WorkLink = styled.span`

@@ -5,6 +5,7 @@ import "./JonathanPesce.css";
 import { Projects } from "./Support/Projects/Projects";
 import { Experiences } from "./Support/Experience/Experiences";
 import { Schools } from "./Support/School/Schools";
+import { SocialMedia } from "./Support/SocialMedia/SocialMedia";
 
 export function JonathanPesce() {
 
@@ -22,6 +23,7 @@ export function JonathanPesce() {
             <Schools/>
             <Experiences/>
             <Projects/>
+            <SocialMedia/>
         </PersonalPage>
     )
 }
