@@ -4,6 +4,7 @@ import { Parallax, Background } from 'react-parallax';
 import "./JonathanPesce.css";
 import { Projects } from "./Support/Projects/Projects";
 import { Experiences } from "./Support/Experience/Experiences";
+import { Schools } from "./Support/School/Schools";
 
 export function JonathanPesce() {
 
@@ -18,6 +19,7 @@ export function JonathanPesce() {
                     </MainCoverImageInformation>
                 </CoverImage>
             </Parallax>
+            <Schools/>
             <Experiences/>
             <Projects/>
         </PersonalPage>
@@ -48,10 +50,14 @@ const NameHeader = styled.div`
 const MainCoverImageInformation = styled.div`
     color: #f1faee ;
     font-size: 80px;
-    margin: 5% 8% 0px 0px;
+    margin: 5% 5% 0px 0px;
+
+    @media (max-width: 1650px) {
+        font-size: 70px;
+    }
 
     @media (max-width: 1440px) {
-        font-size: 55px;
+        font-size: 50px;
     }
 
     @media (max-width: 1024px) {

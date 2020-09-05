@@ -3,41 +3,65 @@ import styled from "styled-components";
 import { Plane } from "../WorkAnimations/Plane";
 import {MapPin, Link} from "react-feather"; 
 
-export function Experience() {
+export function Experience({companyName, positionDate, title, description, location, link, animation}: IProps) {
     return (
         <ExperienceContainer>
             <CompanyInformation>
-                <CompanyName>Bombardier</CompanyName>
-                <PositionDuration>June 1st 2019 - current</PositionDuration>
-                <Plane/>
+                <CompanyName>{companyName}</CompanyName>
+                <PositionDuration>{positionDate}</PositionDuration>
+                {animation}
             </CompanyInformation>
             <PositionInformation>
-                <PositionTitle>Fulltime - Software Developer Intern</PositionTitle>
+                <PositionTitle>{title}</PositionTitle>
                 <PositionDescription>
-                    Working as an intern Software Developer Intern within a large digital team mainly contributing pages and bug fixs to the new e-commerce site and eventually 
-                    individually creating a admin dashboard for the site. The sites were React based using Next.js working in a sprint. 
+                    {description} 
                 </PositionDescription>
                 <PositionDetails>
-                    <Detail><MapPin size={20}/>Montreal</Detail>
-                    <Detail><Link size={20}/>http://opo.something.com</Detail>
+                    <Detail><MapPin size={20}/>{location}</Detail>
+                    <Detail><Link size={20}/><WorkLink onClick={() => { window.location = (link as any); }}>{link}</WorkLink></Detail>
                 </PositionDetails>
             </PositionInformation>
         </ExperienceContainer>
     )
 }
 
+interface IProps {
+    companyName: string, 
+    positionDate: string,
+    title: string, 
+    description: string, 
+    location: string, 
+    link: string, 
+    animation: JSX.Element
+}
+
+const WorkLink = styled.span`
+    &:hover {
+        color: #e63946;
+        cursor: pointer;
+    }
+`
+
 const ExperienceContainer = styled.div`
     color: #f1faee;
     display: flex;
     font-size: 16px;
+    margin: 50px 0px;
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+    }
 `
 
 const Detail = styled.div`
     align-items: center;
     color: #a8dadc;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     margin-right: 10px;
+    margin-bottom: 5px;
+    overflow: wrap;
+    white-space: normal;
     
     > * {
         margin-right: 5px;
@@ -46,6 +70,10 @@ const Detail = styled.div`
 
 const PositionDetails = styled.div`
     display: flex;
+    width: fit-content;
+    @media (max-width: 400px) {
+        flex-direction: column;
+    }
 `
 
 const PositionDescription = styled.div`
@@ -58,6 +86,10 @@ const PositionTitle = styled.div`
     font-size: 16px;
     font-weight: bold;
     height: 30px;
+    @media (max-width: 1024px) {
+        height: fit-content;
+        margin-bottom: 5px;
+    }
 `
 
 const PositionInformation = styled.div`
@@ -77,6 +109,9 @@ const CompanyName = styled.div`
 `
 
 const CompanyInformation = styled.div`
-    width: 400px;
-    margin-right: 100px;
+    width: 100%;
+    @media (min-width: 1024px) {
+        width: 400px;
+        margin-right: 100px;
+    }
 `

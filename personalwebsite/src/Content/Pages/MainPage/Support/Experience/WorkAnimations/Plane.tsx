@@ -21,7 +21,7 @@ export function Plane() {
 const Container = styled.div`
     position: relative;
     width: 200px;
-    height: 200px;
+    height: 150px;
     overflow: hidden;
 `
 
@@ -66,20 +66,20 @@ const Clouds = styled.div`
     bottom: 0;
 
     > img:nth-child(1) {
-        top: 10px;
-        animation-delay: -1s;
-        animation: animate-cloud 6s linear infinite;
+        top: 15px;
+        animation-delay: -2s;
+        animation: animate-cloud 8s linear infinite;
     }
 
     > img:nth-child(2) {
-        top: 100px;
-        animation-delay: -2s;
-        animation: animate-cloud 4s linear infinite;
+        top: -10px;
+        animation-delay: -4s;
+        animation: animate-cloud 6s linear infinite;
     }
 
     > img:nth-child(3) {
         top: 40px;
-        animation-delay: -3s;
+        animation-delay: -5s;
         animation: animate-cloud 5s linear infinite;
     }
 
