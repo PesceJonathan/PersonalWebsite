@@ -1,0 +1,41 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b0139113.chunk.css",
+    "main.js": "/static/js/main.2dff2f5a.chunk.js",
+    "main.js.map": "/static/js/main.2dff2f5a.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.2b353301.js",
+    "runtime-main.js.map": "/static/js/runtime-main.2b353301.js.map",
+    "static/css/2.399dd55c.chunk.css": "/static/css/2.399dd55c.chunk.css",
+    "static/js/2.b04c8792.chunk.js": "/static/js/2.b04c8792.chunk.js",
+    "static/js/2.b04c8792.chunk.js.map": "/static/js/2.b04c8792.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.003aa06ea7cf01f4f32267c2499ec2eb.js": "/precache-manifest.003aa06ea7cf01f4f32267c2499ec2eb.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.399dd55c.chunk.css.map": "/static/css/2.399dd55c.chunk.css.map",
+    "static/css/main.b0139113.chunk.css.map": "/static/css/main.b0139113.chunk.css.map",
+    "static/js/2.b04c8792.chunk.js.LICENSE.txt": "/static/js/2.b04c8792.chunk.js.LICENSE.txt",
+    "static/media/Chart.svg": "/static/media/Chart.68d0f1e7.svg",
+    "static/media/ChessPawn.svg": "/static/media/ChessPawn.0ab770a5.svg",
+    "static/media/Concordia.svg": "/static/media/Concordia.96578da9.svg",
+    "static/media/Dawson.png": "/static/media/Dawson.360cf29c.png",
+    "static/media/Fill.svg": "/static/media/Fill.0fdebeee.svg",
+    "static/media/IUTDeLyon.png": "/static/media/IUTDeLyon.1fffe6a8.png",
+    "static/media/Me.png": "/static/media/Me.0e77a9b5.png",
+    "static/media/Plane.png": "/static/media/Plane.fde8e8bc.png",
+    "static/media/RoyalWestAcademy.png": "/static/media/RoyalWestAcademy.ace2a019.png",
+    "static/media/Snake.svg": "/static/media/Snake.753dbebc.svg",
+    "static/media/Truck.png": "/static/media/Truck.17080759.png",
+    "static/media/WorldMap.svg": "/static/media/WorldMap.ac25f028.svg",
+    "static/media/chessground.css": "/static/media/wR.57350123.svg",
+    "static/media/background.jpeg": "/static/media/background.047cde2a.jpeg",
+    "static/media/cloud.svg": "/static/media/cloud.66e563de.svg",
+    "static/media/waterBottle.png": "/static/media/waterBottle.353573fb.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2b353301.js",
+    "static/css/2.399dd55c.chunk.css",
+    "static/js/2.b04c8792.chunk.js",
+    "static/css/main.b0139113.chunk.css",
+    "static/js/main.2dff2f5a.chunk.js"
+  ]
+}
