@@ -55,7 +55,7 @@ export function School({companyName, positionDate, title, description, location,
     
     const Detail = styled.div`
         align-items: center;
-        color: #a8dadc;
+        color: #457b9d;
         display: flex;
         justify-content: flex-start;
         margin-right: 10px;

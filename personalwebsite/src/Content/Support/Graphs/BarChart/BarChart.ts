@@ -22,7 +22,7 @@ export class BarChart {
 
     this.Tooltip = d3.select("#" + this.id)
         .append("div")
-        .style("opacity", 0)
+        .style("display", "none")
         .style("background-color", "rgba(247,247,247,0.85)")
         .style("border", "solid")
         .style("border-color", "blue")
@@ -104,22 +104,24 @@ export class BarChart {
             //Set the initial values to 0 so that the animations will lift them
             .attr("y", (d: BarGraphData) => scales.y(scales.min))
             .attr("height", (d: BarGraphData) => this.height - scales.y(scales.min))
-            .on("mouseover", (d: BarGraphData) => this.Tooltip.style("opacity", 1))
+            .on("mouseover", (d: BarGraphData) => this.Tooltip.style("display", "block"))
             .on("mousemove", (d: BarGraphData, i, n) => {
+
+                let svgDimension = svg.node()?.getBoundingClientRect().width ?? 0;
+                let svgHeight = svg.node()?.getBoundingClientRect().height ?? 0;
 
                 let tooltipWidth: number = this.Tooltip.node()?.offsetWidth ?? 0;
                 let tooltipHeight: number = this.Tooltip.node()?.offsetHeight ?? 0;
 
-                let positionLeft: number = (d3.mouse(n[i])[0]) - (tooltipWidth / 2) + this.margins.left;
-                let positionRight: number = (d3.mouse(n[i])[1]) - tooltipHeight;
-            
+                let positionLeft: number = (((d3.mouse(n[i])[0])) / 180) * svgDimension - (tooltipWidth / 2);
+                let positionRight: number = (((d3.mouse(n[i])[1])) / 250) * svgHeight - tooltipHeight - 5;
 
                 this.Tooltip.html(this.generateTooltipText(d))
                             .style("border-color", d.color)
                             .style("left", positionLeft + "px")
                             .style("top", positionRight + "px");
             })
-            .on("mouseleave",(d: BarGraphData) => this.Tooltip.style("opacity", 0))
+            .on("mouseleave",(d: BarGraphData) => this.Tooltip.style("display", "none"))
             .transition()
             .duration(this.startAnimationTime)
             .attr("y", (d: BarGraphData) => scales.y(d.value))
@@ -129,8 +131,8 @@ export class BarChart {
     private generateTooltipText(d: BarGraphData) {
         let base: string = d.domain + " rating of " + d.value;
 
-        if (d.date)
-            base += "</br>Date: May 20th 2020";
+        // if (d.date)
+        //     base += "</br>Date: May 20th 2020";
 
         return base;
     }

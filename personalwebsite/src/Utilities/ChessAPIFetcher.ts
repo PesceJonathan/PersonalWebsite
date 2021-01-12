@@ -40,6 +40,7 @@ export const getChessData = (username: string): Promise<ChessInformation> =>
                     games: games,
                 });
             })
+            .catch(err => reject());
     })
 }
 

@@ -1,32 +1,49 @@
 import React from "react";
 import styled from "styled-components";
-import { Parallax, Background } from 'react-parallax';
+import { Parallax } from 'react-parallax';
 import "./JonathanPesce.css";
 import { Projects } from "./Support/Projects/Projects";
 import { Experiences } from "./Support/Experience/Experiences";
 import { Schools } from "./Support/School/Schools";
 import { SocialMedia } from "./Support/SocialMedia/SocialMedia";
+import { AboutMe } from "./Support/AboutMe/AboutMe";
+import Picture from "../../Assets/Grenoble.jpg";
+import Budapest from "../../Assets/Budapest.jpg";
+import Rome from "../../Assets/Rome.jpg";
 
 export function JonathanPesce() {
 
     return (
         <PersonalPage>
-            <Parallax blur={{min: -8, max: 15}} bgImage={"https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Assets/JonathanBackground.png"} bgImageAlt={"Parallax Background Image"} strength={500}>
+            <Parallax blur={{min: -8, max: 15}} bgImage={"https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Assets/JonathanBackground.png"} bgImageAlt={"Parallax Background Image"} strength={500} className="Lyon">
                 <CoverImage>
                     <MainCoverImageInformation>
                         <NameHeader>Jonathan Pesce</NameHeader>
-                        <NameHeader>Computer Science and</NameHeader>
-                        <NameHeader>Mathematics Student</NameHeader>
+                        <NameDetails>Computer Science and Mathematics Student</NameDetails>
                     </MainCoverImageInformation>
                 </CoverImage>
             </Parallax>
-            <Schools/>
-            <Experiences/>
-            <Projects/>
+            <AboutMe/>
             <SocialMedia/>
+            <Parallax bgImage={Picture} bgImageAlt={"Parallax Background Image"} strength={500} className={"Grenoble"}>
+                <SecondaryParallax/>
+            </Parallax>
+            <Projects/>
+            <Parallax bgImage={Budapest} bgImageAlt={"Parallax Background Image"} strength={500}>
+                <SecondaryParallax/>
+            </Parallax>
+            <Experiences/>
+            <Parallax bgImage={Rome} bgImageAlt={"Parallax Background Image"} strength={500}>
+                <SecondaryParallax/>
+            </Parallax>
+            <Schools/>
         </PersonalPage>
     )
 }
+
+const SecondaryParallax = styled.div`
+    height: 70vh;
+`
 
 const PersonalPage = styled.div`
     font-family: 'Montserrat', sans-serif;
@@ -45,6 +62,27 @@ const CoverImage = styled.div`
 
 const NameHeader = styled.div`
     @media (max-width: 480px) {
+        text-align: center;
+    }
+`
+
+const NameDetails = styled.div`
+    font-size: 30px;
+
+    @media (max-width: 1440px) {
+        font-size: 25px;
+    }
+
+    @media (max-width: 1024px) {
+        font-size: 20px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 15px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 15px;
         text-align: center;
     }
 `

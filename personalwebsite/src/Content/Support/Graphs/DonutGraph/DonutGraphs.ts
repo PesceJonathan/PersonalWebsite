@@ -36,7 +36,7 @@ export class DonutGraph {
 
         this.Tooltip = d3.select("#" + this.id)
                          .append("div")
-                         .style("opacity", 0)
+                         .style("display", "none")
                          .style("background-color", "rgba(247,247,247,0.85)")
                          .style("border", "solid")
                          .style("border-color", "blue")
@@ -180,22 +180,23 @@ export class DonutGraph {
             //Add events for dealing with the different hover events
             .on("mouseenter", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => d3.select("#" + this.id + d.data.title + "hover").interrupt().attr("d", this.expandedHoverArc))
             .on("mouseout", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => d3.select("#" + this.id + d.data.title + "hover").transition().duration(500).attr("d", this.hiddenHoverArc))
-            .on("mouseover", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => this.Tooltip.style("opacity", 1))
+            .on("mouseover", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => this.Tooltip.style("display", "block"))
             .on("mousemove", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>, i, n) => {
+
+                let svgDimension = this.svg.node()?.getBoundingClientRect().width ?? 0;
 
                 let tooltipWidth: number = this.Tooltip.node()?.offsetWidth ?? 0;
                 let tooltipHeight: number = this.Tooltip.node()?.offsetHeight ?? 0;
 
-                let positionLeft: number = (d3.mouse(n[i])[0]) + (this.width/2) - tooltipWidth / 2;
-                let positionRight: number = (d3.mouse(n[i])[1]) + (this.height/2) - tooltipHeight - 5;
-            
+                let positionLeft: number = (((d3.mouse(n[i])[0]) + 125) / 250) * svgDimension - tooltipWidth / 2;
+                let positionRight: number = (((d3.mouse(n[i])[1]) + 125) / 250) * svgDimension - tooltipHeight - 5;
 
                 this.Tooltip.html(this.generateTooltipText(d))
                             .style("border-color", d.data.colour)
                             .style("left", positionLeft + "px")
                             .style("top", positionRight + "px");
             })
-            .on("mouseleave", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => this.Tooltip.style("opacity", 0));
+            .on("mouseleave", hover ? () => {} : (d: PieArcDatum<DataWithPercentage>) => this.Tooltip.style("display", "none"));
 
         //Add the animations to the pie chart
         if (!hover)

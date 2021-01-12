@@ -15,7 +15,7 @@ export function Schools() {
                 <ExperiencePage>
                     <School companyName={"Concordia University"} positionDate={"Sep 2019 - Current"} title={"Mathematics and Statistics and Computer Applications"} 
                         location={"Montreal"} link={"https://www.concordia.ca/"} linkTitle={"concordia.ca"} animation={CreateImageElement(Concordia)}
-                        description={"Working as an intern Software Developer Intern within a large digital team mainly contributing pages and bug fixs to the new e-commerce site and eventually individually creating a admin dashboard for the site. The sites were React based using Next.js working in a sprint."} />
+                        description={"Studying Computer Applications to continue to enhance my computer science skills and knowledge while studying Mathematics and Statistics to allow me to have the proper knowledge to go into Data Science or AI. Currently in the Co-Op version of the program adding an additional 3 internships to my course load."} />
                     <School companyName={"IUT de Lyon"} positionDate={"Feb 2019 - Jun 2019"} title={"Computer Science"} 
                         location={"Lyon"} link={"https://iut.univ-lyon1.fr/"} linkTitle={"iut.univ-lyon1.fr"} animation={CreateImageElement(IUT)}
                         description={"Exchange program to complete my final semester of my DEC abroad in Lyon where I did around 2 months of studying and 3 months of working. "} />

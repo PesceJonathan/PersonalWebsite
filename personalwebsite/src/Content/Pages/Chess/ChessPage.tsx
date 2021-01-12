@@ -7,7 +7,7 @@ import background from "../../Assets/background.jpeg";
 import { ChessBoard } from "./Support/ChessBoard/ChessBoard";
 import { StatsForGameMode } from "./Support/Stats/StatsForGameMode";
 import { ChessProfile } from "./Support/Profile/ChessProfiles";
-import { BarChartComponent } from "../../Support/Graphs/BarChart/BarChartComponent";
+import Loader from "react-loader-spinner";
 
 export class ChessPage extends Component<IProps, IState> {
     private games?: RetrieveGames;
@@ -35,8 +35,7 @@ export class ChessPage extends Component<IProps, IState> {
             this.games?.getFirstGame().then((game: IGame) => {
                 this.setState({isLoadingData: false, userInfo: res.userInfo, stats: res.stats, game: game});
             });
-        });
-
+        }).catch(err => window.location.reload());
     }
 
     changeGame() {
@@ -48,8 +47,11 @@ export class ChessPage extends Component<IProps, IState> {
         let {username} = this.props;
  
         if (isLoadingData) {
-            //Change to be a loading screen (maybe a spinning pawn)
-            return <div></div>;
+            return (
+                <CenterContainer>
+                    <Loader type={"ThreeDots"} color={"#ccc"} height={80} width={80} />
+                </CenterContainer>
+            );
         }
 
         return(
@@ -81,6 +83,15 @@ interface IState {
 
 
 //Define the styles of the component
+
+const CenterContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 30vh;
+    position: relative;
+    width: 100%;
+`
+
 const Page = styled.div`
     margin: 0px;
     padding: 0px;

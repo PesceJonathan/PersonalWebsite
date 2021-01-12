@@ -8,7 +8,8 @@ export class ChessProfile extends Component<IProps> {
         avatar = avatar ?? "https://www.chess.com/bundles/web/images/user-image.007dad08.svg";
 
         return (
-            <ProfileInformation className={className}>
+            //@ts-ignore
+            <ProfileInformation className={className} onClick={() => {window.location = profileLink;}}>
                 <UserIdentifier>
                     <StyledImage src={avatar} alt="Player Icon"/>
                     <div>{username}</div>
@@ -56,6 +57,7 @@ const ProfileInformation = styled.div`
     border: 1px gray solid;
     border-radius: 10px;
     height: fit-content;
+    cursor: pointer;
 `
 
 const StyledImage = styled.img`

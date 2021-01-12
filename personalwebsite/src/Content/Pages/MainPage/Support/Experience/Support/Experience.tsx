@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Plane } from "../WorkAnimations/Plane";
 import {MapPin, Link} from "react-feather"; 
 
 export function Experience({companyName, positionDate, title, description, location, link, linkTitle, animation}: IProps) {
@@ -14,7 +13,7 @@ export function Experience({companyName, positionDate, title, description, locat
             <PositionInformation>
                 <PositionTitle>{title}</PositionTitle>
                 <PositionDescription>
-                    {description} 
+                    {description.map((task, index) => <PositionDescriptionTask key={index}>{task}</PositionDescriptionTask>)}
                 </PositionDescription>
                 <PositionDetails>
                     <Detail><MapPin size={20}/>{location}</Detail>
@@ -29,7 +28,7 @@ interface IProps {
     companyName: string, 
     positionDate: string,
     title: string, 
-    description: string, 
+    description: string[], 
     location: string, 
     link: string, 
     animation: JSX.Element,
@@ -77,8 +76,12 @@ const PositionDetails = styled.div`
     }
 `
 
-const PositionDescription = styled.div`
+const PositionDescription = styled.ul`
     margin-bottom: 20px;
+`
+
+const PositionDescriptionTask = styled.li`
+    margin-left: 30px;
 `
 
 const PositionTitle = styled.div`
@@ -110,9 +113,9 @@ const CompanyName = styled.div`
 `
 
 const CompanyInformation = styled.div`
-    width: 100%;
-    @media (min-width: 1024px) {
-        width: 400px;
-        margin-right: 100px;
+    margin-right: 100px;
+
+    @media (max-width: 1024px) {
+        margin-right: 0px;
     }
 `

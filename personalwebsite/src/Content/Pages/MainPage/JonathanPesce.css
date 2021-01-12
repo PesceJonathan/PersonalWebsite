@@ -1,11 +1,16 @@
 @media (max-width: 600px) {
-    .react-parallax-bgimage {
+    .Lyon .react-parallax-bgimage {
         left: 70% !important;
     }
 }
 
 @media (max-width: 340px) {
-    .react-parallax-bgimage {
+    .Lyon .react-parallax-bgimage {
         left: 100% !important;
+    }
+
+    .Grenoble .react-parallax-bgimage {
+        left: 35% !important;
+        display: hidden;
     }
 }

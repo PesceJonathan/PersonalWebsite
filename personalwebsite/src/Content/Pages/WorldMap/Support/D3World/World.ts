@@ -24,7 +24,6 @@ export class World {
             this.svg.attr("transform", d3.event.transform);
             let k = d3.event.transform.k;
             let dim = Math.floor(10 / Math.sqrt(k)) - 1;  
-            console.log( "translate(-" + (dim/2) + ", -" + dim + ")");
             this.svg.selectAll(".pin").attr("height", dim + "px").attr("width", dim + "px").attr("transform", "translate(0, -" + dim + ")");
         });
 
@@ -38,10 +37,10 @@ export class World {
                     .call(zoom)
                     .append("g");
 
-        let worldMapData = d3.json("https://gist.githubusercontent.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-50m.json")
-        .then(((data: any) => {
-            this.render(feature(data, data.objects.countries));
-        }));
+        d3.json("https://gist.githubusercontent.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-50m.json")
+            .then(((data: any) => {
+                this.render(feature(data, data.objects.countries));
+            }));
 
         places.cities.map(t => new Image().src = t.img);
 
@@ -79,31 +78,9 @@ export class World {
                             this.tooltipDescription.html(d.description);
                         })
                         .on("mouseleave",(d: any) => this.tooltip.style("display", "none"))
-                        .on("mousemove", (d: any, i: any, n: any) => {
-                            let tooltipWidth: number = this.tooltip.node()?.offsetWidth ?? 0;
-                            let tooltipHeight: number = this.tooltip.node()?.offsetHeight ?? 0;
-                            
-
-            
+                        .on("mousemove", (d: any, i: any, n: any) => {            
                             this.tooltip.style("left", d3.event.clientX + "px")
                                         .style("top", d3.event.clientY + "px");
                         });
     }
 }
-
-const tempCity = [
-    {
-        "name": "Montreal",
-        "lat": "45.50884",
-        "long": "-73.58781",
-        "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/Canada/Montreal.jpg",
-        "description": "Born and raised Montrealer who has been dissapointed 21 years in a row by the Montreal Canadiens!"
-    },
-    {
-        "name": "Aix Les Bains",
-        "lat": "45.6923",
-        "long": "5.9090",
-        "img": "https://raw.githubusercontent.com/PesceJonathan/PersonalWebsite/ChessPage/Countries/France/AixLesBains.jpg",
-        "description": "Weekend trip where we climbed up le Mont Revard, which has an elevation of <p>fff</p> "
-    }
-]

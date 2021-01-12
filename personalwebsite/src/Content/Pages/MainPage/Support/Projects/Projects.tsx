@@ -12,11 +12,11 @@ export function Projects() {
         <PageSize>
             <ProjectsContainer>
                 <Header>Projects</Header>
-                <Project icon={ChessPawn} name={"Chess Dashboard"} description={"One page dashboard showing off my Chess.com stats with the last few games I have played!"} link={"http://192.168.0.16:3000/chess"}/>
-                <Project icon={WorldMap} name={"Traveled Locations"} description={"An interactive world map that shows the many different cities I have been traveled to! All done using D3.js and javascript!"} link={"http://192.168.0.16:3000/worldMap"}/>
+                <Project icon={WorldMap} name={"Traveled Locations"} description={"An interactive world map that shows the many different cities I have been traveled to! All done using D3.js and javascript!"} link={"http://jonathanpesce.com/#/worldMap"}/>
+                <Project icon={ChessPawn} name={"Chess Dashboard"} description={"One page dashboard showing off my Chess.com stats with the last few games I have played!"} link={"http://jonathanpesce.com/#/chess"}/>
                 <Project icon={Chart} name={"Horse Racer"} description={"Power BI custom visualization that is a horse racing graph with many customizable settings!"} link={"https://github.com/PesceJonathan/PowerBI-HorseRace"}/>
-                <Project icon={Snake} name={"Snake Game"} description={"Snake game with multiple levels that was done for a TP assignment for my JS class at IUT de Lyon."} link={"http://tp3javascript.herokuapp.com/Snake/"}/>
                 <Project icon={Fill} name={"Icon Fill"} description={"Power BI custom visualization that takes an Icon and will represent a percentage by filling the icon!"} link={"https://github.com/PesceJonathan/IconFill"}/>
+                <Project icon={Snake} name={"Snake Game"} description={"Snake game with multiple levels that was done for a TP assignment for my JS class at IUT de Lyon."} link={"http://tp3javascript.herokuapp.com/Snake/"}/>
                 <EmptyProject/>
                 <EmptyProject/>
             </ProjectsContainer>
@@ -30,6 +30,7 @@ const PageSize = styled.div`
     justify-content: center;
     padding-top: 60px;
     width: 100%;
+    min-height: 100vh;
 `
 
 const Header = styled.div`
@@ -50,7 +51,7 @@ const ProjectsContainer = styled.div`
         margin-bottom: 60px;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
         justify-content: center;
     }
 `
