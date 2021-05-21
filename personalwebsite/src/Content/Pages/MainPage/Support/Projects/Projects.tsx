@@ -6,12 +6,16 @@ import Snake from "../Assets/Snake.svg";
 import styled from "styled-components";
 import Chart from "../Assets/Chart.svg";
 import Fill from "../Assets/Fill.svg";
+import Webcam from "../Assets/webcam.svg";
+import Vote from "../Assets/Vote.svg";
 
 export function Projects() {
     return (
         <PageSize>
             <ProjectsContainer>
                 <Header>Projects</Header>
+                <Project icon={Webcam} name={"Block Shame"} description={"McGill 2021 hackathon where we took home first place prize with our AI that blocks your webcam!"} link={"https://github.com/PesceJonathan/BlockShame"}/>
+                <Project icon={Vote} name={"End All Debates"} description={"Debating website creating for fun to see what is the best from various subjects."} link={"https://endalldebates.com/"}/>
                 <Project icon={WorldMap} name={"Traveled Locations"} description={"An interactive world map that shows the many different cities I have been traveled to! All done using D3.js and javascript!"} link={"http://jonathanpesce.com/#/worldMap"}/>
                 <Project icon={ChessPawn} name={"Chess Dashboard"} description={"One page dashboard showing off my Chess.com stats with the last few games I have played!"} link={"http://jonathanpesce.com/#/chess"}/>
                 <Project icon={Chart} name={"Horse Racer"} description={"Power BI custom visualization that is a horse racing graph with many customizable settings!"} link={"https://github.com/PesceJonathan/PowerBI-HorseRace"}/>
